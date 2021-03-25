@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login or Sign Up</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script defer src="Login.js"></script>
+    <link rel="stylesheet" href="Login.css">
+</head>
+<body>
+    <div class="d-flex align-items-center" id="inputDiv">
+        <div class="container m-auto mb-0 text-center w-25 p-0" id="inputContainer" style="background-color: gray">
+            <div id="slidingBG" class="slideLeft"> &nbsp; </div>
+            <div class="row m-auto" style="background-color: white">
+                <div class="col-6 p-0">
+                    <button type="button" class="toggleBtn" onclick=switchToLogin()>Log In</button>
+                </div>
+                <div class="col-6 p-0">
+                    <button type="button" class="toggleBtn" onclick=switchToSignup()>Sign Up</button>
+                </div>
+            </div>
+            <div class="container text-left d-flex align-items-center w-100 h-100">
+                <form id="loginForm" class="vis w-100">
+                    <div class="row">
+                        <div class="col-5">
+                            Username:
+                        </div>
+                        <div class="col-7">
+                            <input type="text" id="usernameLogin" name="email">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">
+                            Password:
+                        </div>
+                        <div class="col-7">
+                            <input type="password" id="passwordLogin" name="pwd">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <button type="button" class="formBtn" id="loginBtn">Log In</button>
+                        </div>
+                    </div>
+                </form>
+                <form id="signupForm" class="transp w-100">
+                    <div class="row">
+                        <div class="col-5">
+                            Email:
+                        </div>
+                        <div class="col-7">
+                            <input type="email" id="username" name="email">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">
+                            Password:
+                        </div>
+                        <div class="col-7">
+                            <input type="password" id="password" name="pwd">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">
+                            Confirm Password:
+                        </div>
+                        <div class="col-7">
+                            <input type="password" id="confirmPwd" name="confirmPwd">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <button type="button" class="formBtn" id="signupBtn">Sign Up</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
