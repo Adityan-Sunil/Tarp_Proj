@@ -1,0 +1,105 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway:800|Merriweather+Sans|Share+Tech+Mono");
+body{
+    font-family: "Verdana", sans-serif;
+    height:99.6vh;
+    background: #6d7993;
+}
+.parent{
+    background: #6d7993;
+    color:white;
+}
+.navbar{
+    height:5vh;
+    text-align: center;
+    width:100%;
+    line-height:5vh;
+    font-size: 1.2em;
+}
+.body{
+    margin-top:1%;
+    min-height:70vh;
+    display: grid;
+    grid-template-columns: 15% 85%;
+}
+.options{
+    /* position:fixed;
+    left: 0.5%;
+    top:8.5vh;
+    width:20%; */
+    height:60%;
+    display: grid;
+    grid-template-columns: 90%;
+    row-gap: 1%;
+    grid: 5em;
+    font-size:0.8em;
+}
+.control{
+    height:39.5%;
+}
+.backbutton{
+    border-top:1px solid black;
+    width:98%;
+    padding-left:2%;
+    height:6vh;
+    margin-top:72%;
+    line-height:6vh;
+    text-align: left;
+}
+.content-tile{
+    height:5vh;
+    margin-left:10%;
+    margin-top:10%;
+    text-align: center;
+    line-height: 5vh;
+    border:1px solid rgb(165, 164, 164);
+}
+
+.sidebar{
+    width:20%;
+}
+.reg{
+    padding:2%;
+    margin-bottom:2%;
+}
+h1{
+    text-transform: uppercase;
+}
+h3{
+    margin-top:0;
+    text-transform: uppercase;
+}
+.shadow{
+    box-shadow: 0px 0px 10px 2px rgb(219, 219, 219);
+}
+table{
+    width:100%;
+    border-collapse: collapse;
+}
+tr{
+    height:6vh;
+    border:1px solid black;
+}
+td{
+    text-align: center;
+    border:1px  solid black;
+}
+nav{
+    border:1px solid black;
+    background: #d5d5d5;
+    color:black;
+}
+.sidebar{
+    background: #96858f;
+}
+.content-body div{
+    background: #9099a2;
+}
+.nav-link{
+    color:white;
+    text-transform:uppercase;
+}
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: white !important;
+    background-color: #9099a2 !important;
+}
+
