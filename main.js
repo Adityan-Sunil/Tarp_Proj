@@ -4,15 +4,15 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser')
 require("dotenv").config();
 
-// const pg = require("pg");
-// const db = new pg.Client({
-//     connectionString: process.env.DATABASE_URL,
-//     ssl: {rejectUnauthorized: false}
-// });
-// db.connect();
+const pg = require("pg");
+const db = new pg.Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {rejectUnauthorized: false}
+});
+db.connect();
 
-var pgp = require('pg-promise')(/* options */)
-var db = pgp('postgres://postgres:root@localhost:5432/TARP')
+// var pgp = require('pg-promise')(/* options */)
+// var db = pgp('postgres://postgres:root@localhost:5432/TARP')
 
 
 
