@@ -16,8 +16,8 @@ body{
 }
 
 #slidingBG {
-    background-color: black;
-    box-shadow: 0px 6px 10px 2px rgb(165, 164, 164);
+    background-color: white;
+    /* box-shadow: 0px 6px 10px 2px rgb(165, 164, 164); */
     width: 12.5%;
     padding-left: 6px;
     padding-right: 6px;
@@ -28,12 +28,12 @@ body{
 
 .slideLeft {
     transform: translateX(0%);
-    transition: all 1s;
+    transition: transform 1s;
 }
 
 .slideRight {
-    transform: translateX(99%);
-    transition: all 1s;
+    transform: translateX(100%);
+    transition: transform 1s;
 }
 
 .toggleBtn {
@@ -75,7 +75,7 @@ body{
     padding: 1.5%;
     width: 100%;
     background-color: white;
-    box-shadow: inset 0 0 0 0 red;
+    box-shadow: inset 0 0 0 0 teal;
     transition: all 0.5s;
 }
 
@@ -85,7 +85,7 @@ body{
 }
 
 .formBtn:hover {
-    box-shadow: inset calc(25vw - 30px) 0 0 0 red;
+    box-shadow: inset calc(25vw - 30px) 0 0 0 teal;
 }
 .w-90{
     width:90% !important;

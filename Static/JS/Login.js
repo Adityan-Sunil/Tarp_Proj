@@ -2,7 +2,8 @@ var login = true;
 $(document).ready(() => {
     $("#signupForm").hide();
 });
-$(".toggleBtn")[0].style.color = "white";
+$(".toggleBtn")[0].style.color = "black";
+$(".toggleBtn")[1].style.color = "white";
 $("#loginBtn").click(() => {
     var nonJSONRes = $("#loginForm").serializeArray();
     var JSONRes = {};
@@ -46,10 +47,10 @@ $("#signupBtn").click(() => {
 });
 
 function switchToSignup(e) {
-    e.style.color = "white";
+    e.style.color = "black";
     $('.toggleBtn').each(function(){
         if(this !== e){
-            this.style.color = "black";
+            this.style.color = "white";
         }
     })
     if (login) {
@@ -67,10 +68,10 @@ function switchToSignup(e) {
 function switchToLogin(e) {
     $('.toggleBtn').each(function(){
         if(this !== e){
-            this.style.color = "black";
+            this.style.color = "white";
         }
     })
-    e.style.color = "white";
+    e.style.color = "black";
     if (!login) {
         slideBG();
         login = true;
