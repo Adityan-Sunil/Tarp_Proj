@@ -45,38 +45,75 @@ app.use(session({
 app.post("/login/", (req, res) => {
     const user = req.body;
     console.log(user);
-    db.query("SELECT COUNT(*) FROM userInfo WHERE email = $1 AND pwd = $2", [user.email, user.pwd], (err, result) => {
+    db.query("SELECT Emp_ID FROM Employee WHERE Emp_Username = $1 AND Emp_Password = $2", [user.username, user.password], (err, result) => {
         if (err) {
-            console.log(err);
+            console.log("Rejecting dur to error: " + err);
             res.send("reject");
             throw err;
         }
-        if (result.rows[0].count == 1) {
-            req.session.user = user.email;
-            console.log(result.rows);
+        if (result.rows[0].emp_id) {
+            req.session.user = result.rows[0].emp_id;
             res.send("accept");
         } else {
+            console.log("Rejecting due to incorrect login: " + result.rows);
             res.send("reject");
         }
     })
 });
 
-app.post("/signup/", (req, res) => {
-    const user = req.body;
-    console.log(user);
-    db.query("INSERT INTO userInfo VALUES($1, $2)", [user.email, user.pwd], (err) => {
+app.post("/register_company/", (req, res) => {
+    const company = req.body.company;
+    const user = req.body.user;
+    const now = new Date();
+    db.query("INSERT INTO Company(Company_Name, Company_Reg, Company_MSHP, MSHP_Last_Update) VALUES($1, $2, $3, $4) RETURNING Company_ID", [company.name, now, company.membership, now], (err, result) => {
         if (err) {
+            console.log(err);
             res.send("reject");
         } else {
-            req.session.user = user.email;
-            res.send("accept");
+            user.designation = "Admin";
+            insertUser(user, result.rows[0].company_id, (rows) => {
+                req.session.user = rows[0].emp_id;
+                req.session.company = result.rows[0].company_id;
+                res.send("accept");
+            }, (err) => {
+                console.log(err);
+                res.send("reject");
+            });
         }
     })
+});
+
+async function insertUser(user, company, callback, errorHandle) {
+    db.query("INSERT INTO Employee(Emp_Name, Emp_UserName, Emp_Password, Emp_JoinDate, Emp_Designation, Emp_Email, Company_ID) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING Emp_ID",
+    [user.name, user.username, user.password, new Date(), user.designation, user.email, company],
+    (err, res) => {
+        if (err) {
+            if (errorHandle) {
+                errorHandle(err);
+            }
+        } else {
+            if (callback) {
+                callback(res.rows);
+            }
+        }
+    })
+}
+
+app.post("/register_user/", (req, res) => {
+    const user = req.body.user;
+    const company_id = req.body.company_id;
+    insertUser(user, company_id, (rows) => {
+        res.send("accept");
+    }, (err) => {
+        res.send("reject");
+        console.log(err);
+    });
     
 })
 
 app.post("/logout/", (req, res) => {
     req.session.user = null;
+    req.session.company = null;
     res.send("accept");
 })
 
