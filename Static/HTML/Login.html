@@ -12,14 +12,14 @@
 </head>
 <body>
     <div class="d-flex align-items-center" id="inputDiv">
-        <div class="container m-auto mb-0 text-center w-25 p-0" id="inputContainer" style="background-color: white">
+        <div class="container m-auto mb-0 text-center w-25 p-0 shortHeight" id="inputContainer" style="background-color: white">
             <div id="slidingBG" class="slideLeft"> &nbsp; </div>
             <div class="row m-auto" style="background-color: black">
                 <div class="col-6 p-0">
                     <button type="button" class="toggleBtn" onclick=switchToLogin(this)>Log In</button>
                 </div>
                 <div class="col-6 p-0">
-                    <button type="button" class="toggleBtn" onclick=switchToSignup(this)>Sign Up</button>
+                    <button type="button" class="toggleBtn" onclick=switchToSignup(this)>Register Company</button>
                 </div>
             </div>
             <div class="container text-left d-flex align-items-center w-90 h-90">
@@ -29,7 +29,7 @@
                             Username:
                         </div>
                         <div class="col-7">
-                            <input type="text" id="usernameLogin" name="email">
+                            <input type="text" id="usernameLogin" name="username">
                         </div>
                     </div>
                     <div class="row">
@@ -37,7 +37,7 @@
                             Password:
                         </div>
                         <div class="col-7">
-                            <input type="password" id="passwordLogin" name="pwd">
+                            <input type="password" id="passwordLogin" name="password">
                         </div>
                     </div>
                     <div class="row">
@@ -49,10 +49,47 @@
                 <form id="signupForm" class="transp w-100">
                     <div class="row">
                         <div class="col-5">
-                            Email:
+                            Company Name:
                         </div>
                         <div class="col-7">
-                            <input type="email" id="username" name="email">
+                            <input type="text" id="company_name" name="company_name">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">
+                            Subscription Type:
+                        </div>
+                        <div class="col-7">
+                            <select name="company_membership" id="membership">
+                                <option value="titanium">Titanium</option>
+                                <option value="gold" selected>Gold</option>
+                                <option value="silver">Silver</option>
+                                <option value="bronze">Bronze</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">
+                            Admin Email:
+                        </div>
+                        <div class="col-7">
+                            <input type="email" id="email" name="email">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">
+                            Admin Name:
+                        </div>
+                        <div class="col-7">
+                            <input type="text" id="name" name="name">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">
+                            Admin Username:
+                        </div>
+                        <div class="col-7">
+                            <input type="text" id="username" name="username">
                         </div>
                     </div>
                     <div class="row">
@@ -60,7 +97,7 @@
                             Password:
                         </div>
                         <div class="col-7">
-                            <input type="password" id="password" name="pwd">
+                            <input type="password" id="password" name="password">
                         </div>
                     </div>
                     <div class="row">

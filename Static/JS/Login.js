@@ -26,13 +26,17 @@ $("#loginBtn").click(() => {
 
 $("#signupBtn").click(() => {
     var nonJSONRes = $("#signupForm").serializeArray();
-    var JSONRes = {};
+    var JSONRes = {company: {}, user: {}};
     $.map(nonJSONRes, (field) => {
-        JSONRes[field.name] = field.value;
+        if (field.name.startsWith("company")) {
+            JSONRes.company[field.name.substr(8)] = field.value
+        } else {
+            JSONRes.user[field.name] = field.value
+        }
     });
     if (JSONRes.pwd == JSONRes.confirmPwd) {
         $.ajax({
-            url: '/signup/',
+            url: '/register_company/',
             type: 'POST',
             data: JSON.stringify(JSONRes),
             contentType: 'application/json; charset=utf-8',
@@ -57,6 +61,8 @@ function switchToSignup(e) {
         slideBG();
         login = false;
         toggleTransparent($("#loginForm"));
+        $("#inputContainer").toggleClass("shortHeight");
+        $("#inputContainer").toggleClass("longHeight");
         setTimeout(() => {
             $("#loginForm").hide();
             $("#signupForm").show();
@@ -76,6 +82,8 @@ function switchToLogin(e) {
         slideBG();
         login = true;
         toggleTransparent($("#signupForm"));
+        $("#inputContainer").toggleClass("shortHeight");
+        $("#inputContainer").toggleClass("longHeight");
         setTimeout(() =>  {
             $("#signupForm").hide();
             $("#loginForm").show();

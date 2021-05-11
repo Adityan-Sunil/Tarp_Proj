@@ -10,9 +10,18 @@ body{
 
 #inputContainer {
     box-shadow: 0px 6px 10px 2px rgb(219, 219, 219);
-    height: 50vh;
     font-size: 1.1rem;
     width:50%;
+}
+
+.shortHeight {
+    height: 50vh;
+    transition: height 0.5s;
+}
+
+.longHeight {
+    height: 75vh;
+    transition: height 0.5s;
 }
 
 #slidingBG {
