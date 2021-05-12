@@ -6,17 +6,17 @@ require("dotenv").config();
 
 const pg = require("pg");
 const e = require('express');
-// const db = new pg.Client({
-//     connectionString: process.env.DATABASE_URL,
-//     ssl: {rejectUnauthorized: false}
-// });
 const db = new pg.Client({
-        user: "postgres",
-        password: "root",
-        host: "localhost",
-        port: 5432,
-        database: "tarp"
+    connectionString: process.env.DATABASE_URL,
+    ssl: {rejectUnauthorized: false}
 });
+// const db = new pg.Client({
+//         user: "postgres",
+//         password: "root",
+//         host: "localhost",
+//         port: 5432,
+//         database: "tarp"
+// });
 
 db.connect((err)=>{
     if(err)
@@ -246,7 +246,7 @@ app.post("/orderGraph", (req,res)=>{
             console.log(result.rows);
             result.rows.forEach(result =>{
                 if(!output.hasOwnProperty(result.trans_type)){
-                    count = {}
+                    var count = {}
                     count[result.trans_status]  = result.count
                     output[result.trans_type] = count
                 }else {
@@ -260,6 +260,290 @@ app.post("/orderGraph", (req,res)=>{
 })
 //************************************************************************************* */
 
+app.post('/showallemps',(req,res)=>{
+    console.log(req.body);
+    var details=(req.body);
+    //console.log(indexx)
+    db.query("SELECT * FROM Employee WHERE Company_ID = $1", [details.cid], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send("reject");
+        } else {
+            res.send(result.rows);
+        }
+    })
+    // indexx.displayallemp(details.cid,client,(result,err)=> {
+    //   if (err) {
+    //     console.log("this error was encountered: " + err);
+    // } else {
+    //     console.log("no errors!"); 
+    //     res.send(result)
+    //   }
+    // });
+  })
+  
+//Change the way this where query is written, write multiple endpoints if necessary
+//   app.post('/showallempswhere',(req,res)=>{
+//     console.log(req.body);
+//     var details=(req.body);
+//     indexx.displaywhereemp(details.column, details.value,details.cid,client,(result,err)=> {
+//       if (err) {
+//         console.log("this error was encountered: " + err);
+//     } else {
+//         console.log("no errors!"); 
+//         res.send(result)
+//       }
+//     });
+//   })
+  
+  app.post('/eidnumber',(req,res)=>{
+    console.log(req.body);
+    //var details=(req.body); // useless ?
+    //s=indexx.eidnumber(client)
+    db.query("SELECT COUNT(*) FROM Employee", (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send("reject");
+        } else {
+            res.send(result.rows[0].count)
+        }
+    })
+    // indexx.eidnumber(client, (count, err) => {
+    // console.log("this is query result: " + count);
+    // if (err) {
+    //     console.log("this error was encountered: " + err);
+    // } else {
+    //     console.log("no errors!"); 
+    //     res.send(count)
+    //   }
+    // });
+  })
+  
+  //clone of register_user ?
+  app.post('/insertwithkey',(req,res)=>{
+    console.log(req.body);
+    var details=(req.body);
+    const user = {
+        name: details.name,
+        username: details.username,
+        password: details.pass,
+        Emp_JoinDate: details.date,
+        designation: details.dept,
+        email: details.email,
+        Salary_ID: details.sid,
+        Company_ID: details.cid
+    }
+    insertUser(user, details.cid, (rows) => {
+        res.send(rows)
+    }, (err) => {
+        res.send("reject");
+        console.log(err);
+    })
+    // indexx.insertwithkey(details.date, details.name, details.dept, details.username, details.pass, details.sid, details.mobile, details.email, details.eid,details.cid,client,(result,err)=> {
+    //   if (err) {
+    //     console.log("this error was encountered: " + err);
+    // } else {
+    //     console.log("no errors!"); 
+    //     res.send(result)
+    //   }
+    // });
+  })
+  
+  app.post('/deleteemp',(req,res)=>{
+    console.log(req.body);
+    var details=(req.body);
+    db.query("DELETE FROM Employee WHERE Emp_ID = $1 RETURNING Salary_ID", [details.eid], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send("reject");
+        } else {
+            if (result.rows.length != 1) {
+                res.send("reject");
+            } else {
+                if (result.rows[0].salary_id) {
+                    db.query("DELETE FROM Payroll WHERE Salary_ID = $1", [result.rows[0].salary_id], (err, result) => {
+                        if (err) {
+                            console.log(err);
+                            res.send("reject");
+                        } else {
+                            res.send("Deleted");
+                        }
+                    })
+                } else {
+                    res.send("Deleted");
+                }
+            }
+        }
+    });
+    //  indexx.deleteemp(details.eid, client,(result,err)=> {
+    //   if (err) {
+    //     console.log("this error was encountered: " + err);
+    // } else {
+    //     console.log("no errors!"); 
+    //     res.send(result)
+    //   }
+    // });
+  })
+  
+  
+  app.post('/displayallsalary',(req,res)=>{
+    console.log(req.body);
+    var details=(req.body);
+    db.query("SELECT * FROM Payroll WHERE Salary_ID in (SELECT Salary_ID FROM Employee where Company_ID = $1)", [details.cid], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send("reject");
+        } else {
+            res.send(result.rows);
+        }
+    })
+    // indexx.displayallsalary(details.cid,client, (result,err)=> {
+    //   if (err) {
+    //     console.log("this error was encountered: " + err);
+    // } else {
+    //     console.log("no errors!"); 
+    //     res.send(result)
+    //   }
+    // });
+  })
+  
+  //change the way this where query is executed, write separate endpoints if necessary
+//   app.post('/displaywheresalary',(req,res)=>{
+//     console.log(req.body);
+//     var details=(req.body);
+//     indexx.displaywheresalary(details.column, details.value,details.cid,client,(result,err)=> {
+//       if (err) {
+//         console.log("this error was encountered: " + err);
+//     } else {
+//         console.log("no errors!"); 
+//         res.send(result)
+//       }
+//     });
+//   })
+  
+  
+  app.post('/insertsalaryrow',(req,res)=>{
+    console.log(req.body);
+    var details=(req.body);
+    db.query("INSERT INTO Payroll(Paygrade, Current_Sal, App_Rate, Bonus_Rate, Extra_Hours, Extra_Hour_Rate, Leave_Days, Paid_Leave, Leave_Rate, Extra_Incent) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
+    [details.paygrade, details.currentsalary, details.app, details.bonus, details.extra, details.exrate, details.leave, details.paidl, details.leaverate, details.incentive],
+    (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send("reject");
+        } else {
+            res.send("Inserted");
+        }
+    })
+    // indexx.insertsalaryrow(details.sid,details.paygrade ,details.currentsalary, details.app, details.bonus,details.extra,details.exrate,details.leave,details.paidl,details.leaverate, details.incentive,client, (result,err)=> {
+    //   if (err) {
+    //     console.log("this error was encountered: " + err);
+    // } else {
+    //     console.log("no errors!"); 
+    //     res.send(result)
+    //   }
+    // });
+  })
+  
+  
+  app.post('/deletesalary',(req,res)=>{
+    console.log(req.body);
+    var details=(req.body);
+    db.query("DELETE FROM Payroll WHERE Salary_ID = $1", [details.sid], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send("Deleted");
+        }
+    });
+    // var s = indexx.deletesalary(details.sid,client,(result,err)=> {
+    //   if (err) {
+    //     console.log("this error was encountered: " + err);
+    // } else {
+    //     console.log("no errors!"); 
+    //     res.send(result)
+    //   }
+    // });
+  })
+  
+  //Write this function differently so it either checks for the column or overwrites all columns
+//   app.post('/editemp',(req,res)=>{
+//     console.log(req.body);
+//     var details=(req.body);
+//    indexx.editemp(details.eid,details.column,details.value,client,(result,err)=> {
+//       if (err) {
+//         console.log("this error was encountered: " + err);
+//     } else {
+//         console.log("no errors!"); 
+//         res.send(result)
+//       }
+//     });
+//   })
+  
+  //Similar to the edit employee function, rewrite this
+//   app.post('/editsalary',(req,res)=>{
+//     console.log(req.body);
+//     var details=(req.body);
+//     s = indexx.editsalary(details.sid,details.column,details.value,client,(result,err)=> {
+//       if (err) {
+//         console.log("this error was encountered: " + err);
+//     } else {
+//         console.log("no errors!"); 
+//         res.send(result)
+//       }
+//     });
+//   })
+  
+  
+  app.post('/monthsalary',(req,res)=>{
+    console.log(req.body);
+    var details=(req.body);
+    db.query("SELECT Salary_ID, (Current_Sal + (Extra_Hours * Extra_Hour_Rate) + ((Extra_Incent / 100) * Current_Sal) - (GREATEST(Leave_Days - Paid_Leave, 0) * Leave_Rate)) AS Salary FROM Payroll where Salary_ID IN (SELECT Salary_ID FROM Employee where Company_ID = $1)", 
+    [details.cid],
+    (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send("reject");
+        } else {
+            console.log(result.rows);
+            res.send(result.rows);
+        }
+    })
+    // indexx.monthsalary(details.cid,client,(result,err)=> {
+    //   if (err) {
+    //     console.log("this error was encountered: " + err);
+    // } else {
+    //     console.log("no errors!"); 
+    //     res.send(result)
+    //   }
+    // });
+  })
+  
+  
+  app.post('/yearlyupdate',(req,res)=>{
+    console.log(req.body);
+    var details=(req.body);
+    db.query("UPDATE Payroll SET Current_Sal = (SELECT ((App_Rate / 100) * Current_Sal) FROM Payroll WHERE Salary_ID IN (SELECT Salary_ID FROM Employee WHERE Company_ID = $1))",
+    [details.cid],
+    (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send("reject");
+        } else {
+            res.send("Update success");
+        }
+    })
+    // indexx.yearlyupdate(details.cid,client,(result,err)=> {
+    //   if (err) {
+    //     console.log("this error was encountered: " + err);
+    // } else {
+    //     console.log("no errors!"); 
+    //     res.send(result)
+    //   }
+    // });
+  })
+
+//************************************************************************************* */
 app.listen(3000,()=>{
     console.log("Listening on 3000")
 });
