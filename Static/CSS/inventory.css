@@ -1,0 +1,50 @@
+table{
+    width:100%;
+    border-collapse: collapse;
+}
+tr{
+    height:6vh;
+    border:1px solid black;
+}
+td{
+    text-align: center;
+    border:1px  solid black;
+}
+.prod-search{
+    padding:1%;
+}
+#updateFormModal{
+    position: fixed;
+    top:0%;
+    left:0%;
+    height:100%;
+    width:100%;
+    background:rgba(255,255,255,0.6);
+}
+#updateForm{
+    background: white;
+    position:fixed;
+    top:35%;
+    left:35%;
+    padding:1%;
+    height:30vh;
+    width:30vw;
+    border:1px solid black;
+}
+.modal-head{
+    font-size:1.2em;
+    margin-bottom:3%;
+}
+.graphs{
+    border:1px solid black;
+    height:300px;
+}
+.graph-area{
+    padding-left:5%;
+    display: grid;
+    width:100%;
+    grid-template-columns: 40% 40%;
+    column-gap: 2%;
+    row-gap: 2%;
+
+}

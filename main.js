@@ -4,6 +4,16 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser')
 require("dotenv").config();
 
+
+
+const mustacheExpress = require('mustache-express');
+const mustache = mustacheExpress();
+
+mustache.cache = null;
+app.engine('mustache', mustache);
+app.set('view engine', 'mustache');
+
+
 const pg = require("pg");
 const e = require('express');
 const db = new pg.Client({
@@ -158,16 +168,15 @@ app.post('/addVendor',(req,res)=>{
 //route for adding non client vendor
 app.post('/adduVendor',(req,res)=>{
     var details = req.body;
-    // db.query("INSERT INTO VENDORS VALUES(?,?,?,?,?)",[details.name,details.product,details.quantity],(err)=>{
-    //     if(err){
-    //         console.log(err);
-    //         res.send("Query failed");
-    //     }else{
-    //         res.send("Success");
-    //     }
-    // })
+    db.query("INSERT INTO VENDOR (product_name, vendor_addr, vendor_contact, vendor_email, vendor_name) VALUES($1,$2,$3,$4,$5)",[details.prod_name,details.add,details.contact, details.email, details.Name],(err)=>{
+        if(err){
+            console.log(err);
+            res.send("Query failed");
+        }else{
+            res.send("Success");
+        }
+    })
     console.log(details);
-    res.send("accepted");
 })
 
 app.post('/viewVendors', (req,res)=>{
@@ -544,6 +553,116 @@ app.post('/showallemps',(req,res)=>{
   })
 
 //************************************************************************************* */
+//********************************Inventory Management******************************** */
+
+app.post('/stocks/add/', (req, res) => {
+    console.log('post body', req.body);
+        const sql = 'INSERT INTO Inventory VALUES ($1,$2,$3, $4)';
+        const params = [req.body.prod_id, req.body.prod_name, req.body.quant, req.body.company];
+        db.query(sql, params,(error,results) => {
+            if(error){
+                console.log(error);
+                res.send(error);
+            }else{
+                res.send("success");
+            }
+        });
+
+});
+
+
+app.post('/stocks', (req, res) => {
+    db.query('SELECT * FROM Inventory where company_id = $1',[req.body.id],(error, results) => {
+        if (error) {
+            console.log(error);
+            res.send(error);
+        } else {
+            console.log('results?', results.rows)
+            res.send(results.rows);
+        }
+    })
+});
+
+app.post('/stocks/delete/', (req, res) => {
+
+    const sql = 'DELETE FROM Inventory WHERE product_id = $1 and company_id = $2'
+    const params = [req.body.prod_id, req.body.company];
+    db.query(sql, params,(error, results) => {
+        if(error) {
+            console.log(error);
+            res.send(error);
+        } else {
+            res.send("success");
+        }
+    });
+
+});
+
+app.post("/graphData", (req,res)=>{
+    var output = [];
+    const sql = "Select trans_type, sum(trans_amount) from transactions group by trans_type; Select trans_type, count(trans_type) from transactions group by trans_type; ";
+    db.query(sql,(errors, result)=>{
+        if(errors){
+            console.log(errors)
+        }else{
+            result.forEach(element => {
+                output.push(element.rows);
+            });
+            console.log(output);
+            res.send(JSON.stringify(output));
+        }
+    })
+})
+
+app.get('/stocks/edit/:id', (req, res) => {
+
+    const sql = 'SELECT * FROM Inventory WHERE product_id =$1'
+    const params = [req.params.id];
+    db.query(sql, params,(error,results) => {
+        if(error){
+            console.log(error)
+        } else {
+            console.log('results?', results);
+            res.render('stocks-edit', { stock: results.rows[0] });
+        }
+    });
+
+
+})
+
+//Edit details of stock
+app.post('/stocks/edit/', (req, res) => {
+
+    const sql = 'UPDATE Inventory SET product_name=$1, quantity =$2 WHERE product_id=$4 and company_id = $3'
+    const params = [req.body.prod_name, req.body.prod_quant, req.body.company, req.body.prod_id];
+    db.query(sql, params,(error, results) => {
+        if(error){
+            console.log(error);
+            res.send(error);
+        } else {
+            res.send("success");
+        }
+    });
+
+
+})
+
+
+//dashboard
+app.post('/dashboard', (req, res) => {
+    
+    db.query('Select * from INVENTORY where company_id = $1',[req.body.id],(error, results) => {
+        if(error){
+            console.log(error);
+            res.send(error);
+        } else {
+            console.log('results?', results.rows);
+            res.send(result.rows);
+        }
+    });
+
+})
+
 app.listen(3000,()=>{
     console.log("Listening on 3000")
 });

@@ -20,7 +20,7 @@ body{
 }
 
 .longHeight {
-    height: 75vh;
+    height: 80vh;
     transition: height 0.5s;
 }
 

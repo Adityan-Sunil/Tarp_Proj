@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="inventory.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js" integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg==" crossorigin="anonymous"></script>
+    <script src="xmlHelper.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script> 
     <title>Inventory</title>
@@ -36,108 +38,94 @@
                 <div class="sidebar col pt-4">
                     <ul class="nav nav-pills flex-column justify-content-end list-group-flush" id="pills-tab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" data-bs-toggle="pill" data-bs-target="#pills-register" role="tab" aria-controls="pills-register" aria-selected="true">Add New Product</a>
+                            <a class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-register" role="tab" aria-controls="pills-register" aria-selected="true">Add New Product</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-view" role="tab" aria-controls="pills-view" aria-selected="false">View Inventory</a>
+                            <a class="nav-link active" data-bs-toggle="pill" data-bs-target="#pills-view" role="tab" aria-controls="pills-view" aria-selected="false">View Inventory</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-trans" role="tab" aria-controls="pills-trans" aria-selected="false">Past Orders</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-manage" role="tab" aria-controls="pills-manage" aria-selected="false">Options</a>
+                            <a class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-past" role="tab" aria-controls="pills-past" aria-selected="false" onclick="drawGraphs()">Past Orders</a>
                         </li>
                     </ul>
                 </div>
                 <div class="col-10">
                     <div class="tab-content container pt-4" id="pills-tabContent">
-                        <div class="content tab-pane fade show active" id="pills-register" role="tabpanel" aria-labelledby="pills-register-tab">
+                        <div class="content tab-pane fade show" id="pills-register" role="tabpanel" aria-labelledby="pills-register-tab">
                             <div class="content-header">
                                 <h1>Product Entry</h1>
                             </div>
                             <div class="content-body">
-                                <div class="shadow reg already-exist">
+                                <div class="shadow prod-search">
                                     <h3>Enter details of the product</h3>
-                                    <table>
-                                        <tr>
-                                            <td>Product ID</td>
-                                            <td><input type="text" name="Name"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Product Name</td>
-                                            <td><input type="text" name="add1"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Product Vendor</td>
-                                            <td><input type="text" name="add2"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Quantity</td>
-                                            <td><input type="text" name="cate"></td>
-                                        </tr>
-                                        <tr>
-                                            <td><button id="not-exist" class="inp-btn" onclick="regProduct()"></button></td>
-                                            <td></td>
-                                        </tr>
-                                    </table>
+                                    <form id="add_product">
+                                        <table>
+                                            <tr>
+                                                <td>Product ID</td>
+                                                <td><input type="text" name="prod_id"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Product Name</td>
+                                                <td><input type="text" name="prod_name"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Quantity</td>
+                                                <td><input type="text" name="quant"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><button id="not-exist" class="inp-btn" onclick="regProduct(event)">Submit</button></td>
+                                                <td></td>
+                                            </tr>
+                                        </table>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-                        <div class="content tab-pane fade show" id="pills-trans" role="tabpanel" aria-labelledby="pills-trans-tab">
+                        <div class="content tab-pane fade show active" id="pills-view" role="tabpanel" aria-labelledby="pills-trans-tab">
                             <div class="content-header">
-                               <h1>Past Orders</h1>
+                               <h1>Inventory</h1>
                             </div>
                             <div class="content-body">
-                                <table>
+                                <table id="past_orders">
                                     <tr>
                                         <td>Sno</td>
-                                        <td>Order_ID</td>
                                         <td>Product_ID</td>
                                         <td>Product_Name</td>
                                         <td>Quantity</td>
-                                        <td>Status</td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>Actions</td>
                                     </tr>
                                 </table>
                             </div>
                         </div>
-                        <div class="content tab-pane fade show" id="pills-view" role="tabpanel" aria-labelledby="pills-view-tab"></div>
-                        <div class="content tab-pane fade show" id="pills-manage" role="tabpanel" aria-labelledby="pills-manage-tab"></div>
+                        <div class="content tab-pane fade show" id="pills-past" role="tabpanel" aria-labelledby="pills-view-tab">
+                            <div class="graph-area">
+                                <div class="graphs">
+                                    <canvas id="graph1"></canvas>
+                                </div>
+                                <div class="graphs">
+                                    <canvas id="graph2"></canvas>
+                                </div>
+                                <div class="graphs">
+                                    <canvas id="graph3"></canvas>
+                                </div>
+                                <div class="graphs">
+                                    <canvas id="graph4"></canvas>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div id="updateFormModal">
+        <div id="updateForm">
+            <div class="modal-head" style="width: 100%; text-align: center;">Update Product</div>
+            <form id="update-form">
+
+            </form>
+        </div>
+    </div>
+    <script src="graphs.js"></script>
+    <script src="inventory.js"></script>
 </body>
 </html>

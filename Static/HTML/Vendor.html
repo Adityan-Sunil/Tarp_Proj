@@ -46,9 +46,6 @@
                         <li class="nav-item">
                             <a class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-trans" role="tab" aria-controls="pills-trans" aria-selected="false" onclick="getTransactions()">Vendor Transactions</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-manage" role="tab" aria-controls="pills-manage" aria-selected="false">Manage Vendors</a>
-                        </li>
                     </ul>
                 </div>
                 <div class="col-10">
@@ -75,16 +72,20 @@
                                                 <td><input type="text" name="Name"></td>
                                             </tr>
                                             <tr>
-                                                <td>Address Line 1</td>
-                                                <td><input type="text" name="add1"></td>
+                                                <td>Address</td>
+                                                <td><input type="text" name="add"></td>
                                             </tr>
                                             <tr>
-                                                <td>Address Line 2</td>
-                                                <td><input type="text" name="add2"></td>
+                                                <td>Product Name</td>
+                                                <td><input type="text" name="prod_name"></td>
                                             </tr>
                                             <tr>
-                                                <td>Category</td>
-                                                <td><input type="text" name="cate"></td>
+                                                <td>Contact</td>
+                                                <td><input type="text" name="contact"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Email</td>
+                                                <td><input type="text" name="email"></td>
                                             </tr>
                                             <tr>
                                                 <td><button id="not-exist" class="inp-btn" onclick="unregVendor(event)">Submit</button></td>
@@ -128,7 +129,6 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="content tab-pane fade show" id="pills-manage" role="tabpanel" aria-labelledby="pills-manage-tab"></div>
                     </div>
                 </div>
             </div>

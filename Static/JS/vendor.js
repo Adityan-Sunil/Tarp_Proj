@@ -40,8 +40,8 @@ function getTransactions(){
         sendData({ID:'488817f7-c6ed-4f63-937b-b9ef716b5134'},"/orderGraph",(res)=>{
             console.log(res);
             var graphData = JSON.parse(res);
-            addtoGraph("buy_chart",checkNull(graphData.Buy, "transaction"));
-            addtoGraph("sell_chart", checkNull(graphData.Sell, "transaction"));
+            addtoGraph("doughnut","buy_chart",checkNull(graphData.Buy, "transaction"),"Incoming");
+            addtoGraph("doughnut","sell_chart", checkNull(graphData.Sell, "transaction"),"Outgoing");
         }, true)
         sendData({ID:'488817f7-c6ed-4f63-937b-b9ef716b5134'},"/orders",(res)=>{
             console.log(JSON.parse(res));
