@@ -20,22 +20,11 @@ const db = new pg.Client({
     connectionString: process.env.DATABASE_URL,
     ssl: {rejectUnauthorized: false}
 });
-// const db = new pg.Client({
-//         user: "postgres",
-//         password: "root",
-//         host: "localhost",
-//         port: 5432,
-//         database: "tarp"
-// });
 
 db.connect((err)=>{
     if(err)
         console.log(err);
 });
-
-// var pgp = require('pg-promise')(/* options */)
-// var db = pgp('postgres://postgres:root@localhost:5432/TARP')
-
 
 
 //Declare Middlewares here
@@ -57,17 +46,11 @@ app.use(session({
     cookie:{maxAge:3600*24}
 }));
 
-// const db = sqlite3.Database('./vendor.db',sqlite3.OPEN_CREATE | sqlite3.OPEN_READWRITE, (err) => {
-//     if (err) {
-//       console.log(err.message);
-//     }
-// })
-
 //************************************Login and Signup********************************* */
 app.post("/login/", (req, res) => {
     const user = req.body;
     console.log(user);
-    db.query("SELECT Emp_ID FROM Employee WHERE Emp_Username = $1 AND Emp_Password = $2", [user.username, user.password], (err, result) => {
+    db.query("SELECT Emp_ID, Company_ID, Emp_Designation FROM Employee WHERE Emp_Username = $1 AND Emp_Password = $2", [user.username, user.password], (err, result) => {
         if (err) {
             console.log("Rejecting dur to error: " + err);
             res.send("reject");
@@ -75,6 +58,8 @@ app.post("/login/", (req, res) => {
         }
         if (result.rows[0].emp_id) {
             req.session.user = result.rows[0].emp_id;
+            req.session.company = result.rows[0].company_id;
+            req.session.userType = result.rows[0].Emp_Designation;
             res.send("accept");
         } else {
             console.log("Rejecting due to incorrect login: " + result.rows);
@@ -142,12 +127,135 @@ app.post("/logout/", (req, res) => {
 //Always check with this to make sure user is logged in, even before loading the page
 app.get("/user/", (req, res) => {
     if (req.session.user != null) {
-        res.send({user: req.session.user, company: req.session.company});
+        res.send({user: req.session.user, company: req.session.company, userType: req.session.userType});
     } else {
         res.send(null);
     }
 })
 //************************************************************************************* */
+app.post("/company/", (req, res) => {
+    const CompanyID = req.body.Company_ID;
+    console.log(req.body);
+    db.query("SELECT * from Company WHERE Company_ID = $1", [CompanyID], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send("reject");
+        } else {
+            console.log(result.rows[0]);
+            res.send(result.rows[0]);
+        }
+    })
+})
+
+app.post("/employee_count/", (req, res) => {
+    const Company_ID = req.body.Company_ID
+    db.query("SELECT COUNT(*) AS numEmployees from Employee WHERE Company_ID = $1", [Company_ID], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send("reject");
+        } else {
+            console.log(result.rows[0]);
+            res.send(result.rows[0]);
+        }
+    })
+})
+
+//***********************************Customer Service***********************************/
+
+app.post("/add_ticket/", (req, res) => {
+    const ticket = req.body;
+    const user = req.session.user;
+    const company = req.session.company;
+    const now = new Date();
+
+    db.query("INSERT INTO Customer_Service (Company_ID, Emp_ID, Registered_On, Deadline, Closed, Last_Update, Last_Update_Status, Description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+    [company, user, now, ticket.deadline, false, now, "Open", ticket.description],
+    (err) => {
+        if (err, result) {
+            console.log(err);
+            res.send("reject");
+        } else {
+            res.send(result.rows[0]);
+        }
+    })
+});
+
+app.post("/update_ticket/", (req, res) => {
+    const ticket = req.body;
+    const closed = (ticket.status == "Closed");
+    const now = new Date();
+    db.query("UPDATE Customer_Service SET Last_Update = $1, Last_Update_Status = $2, Closed = $3, Update_Message = $4 WHERE Service_ID = $5 RETURNING *",
+    [now, ticket.status, closed, ticket.message, ticket.service_id],
+    (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send("reject");
+        } else {
+            res.send(result.rows[0]);
+        }
+    })
+});
+
+app.post("/delete_ticket/", (req, res) => {
+    const ticket = req.body.service_id;
+    db.query("DELETE FROM Customer_Service WHERE Service_ID = $1", [ticket], (err) => {
+        if (err) {
+            console.log(err);
+            res.send("reject");
+        } else {
+            res.send("accept");
+        }
+    })
+});
+
+app.post("/fetch_tickets_by_company/", (req, res) => {
+    const company = req.session.company;
+    db.query("SELECT * FROM Customer_Service WHERE Company_ID = $1", [company], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send("reject");
+        } else {
+            res.send(res.rows);
+        }
+    })
+})
+
+app.post("/fetch_tickets_by_reg/", (req, res) => {
+    const user = req.session.user;
+    db.query("SELECT * FROM Customer_Service WHERE Reg_ID = $1", [user], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send("reject");
+        } else {
+            res.send(result.rows);
+        }
+    })
+})
+
+app.post("/fetch_tickets_by_emp/", (req, res) => {
+    const user = req.session.user;
+    db.query("SELECT * FROM Customer_Service WHERE Emp_ID = $1", [user], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send("reject");
+        } else {
+            res.send(result.rows);
+        }
+    })
+})
+
+app.post("/fethc_ticket_by_id/", (req, res) => {
+    const ticket = req.session.service_id;
+    db.query("SELECT * FROM Customer_Service WHERE Service_ID = $1", [ticket], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send("reject");
+        } else {
+            res.send(reault.rows);
+        }
+    })
+})
+
 
 //***********************************Vendor Management******************************** */
 
@@ -281,14 +389,6 @@ app.post('/showallemps',(req,res)=>{
             res.send(result.rows);
         }
     })
-    // indexx.displayallemp(details.cid,client,(result,err)=> {
-    //   if (err) {
-    //     console.log("this error was encountered: " + err);
-    // } else {
-    //     console.log("no errors!"); 
-    //     res.send(result)
-    //   }
-    // });
   })
   
 //Change the way this where query is written, write multiple endpoints if necessary
@@ -307,8 +407,6 @@ app.post('/showallemps',(req,res)=>{
   
   app.post('/eidnumber',(req,res)=>{
     console.log(req.body);
-    //var details=(req.body); // useless ?
-    //s=indexx.eidnumber(client)
     db.query("SELECT COUNT(*) FROM Employee", (err, result) => {
         if (err) {
             console.log(err);
@@ -317,15 +415,6 @@ app.post('/showallemps',(req,res)=>{
             res.send(result.rows[0].count)
         }
     })
-    // indexx.eidnumber(client, (count, err) => {
-    // console.log("this is query result: " + count);
-    // if (err) {
-    //     console.log("this error was encountered: " + err);
-    // } else {
-    //     console.log("no errors!"); 
-    //     res.send(count)
-    //   }
-    // });
   })
   
   //clone of register_user ?
@@ -348,14 +437,6 @@ app.post('/showallemps',(req,res)=>{
         res.send("reject");
         console.log(err);
     })
-    // indexx.insertwithkey(details.date, details.name, details.dept, details.username, details.pass, details.sid, details.mobile, details.email, details.eid,details.cid,client,(result,err)=> {
-    //   if (err) {
-    //     console.log("this error was encountered: " + err);
-    // } else {
-    //     console.log("no errors!"); 
-    //     res.send(result)
-    //   }
-    // });
   })
   
   app.post('/deleteemp',(req,res)=>{
@@ -384,14 +465,6 @@ app.post('/showallemps',(req,res)=>{
             }
         }
     });
-    //  indexx.deleteemp(details.eid, client,(result,err)=> {
-    //   if (err) {
-    //     console.log("this error was encountered: " + err);
-    // } else {
-    //     console.log("no errors!"); 
-    //     res.send(result)
-    //   }
-    // });
   })
   
   
@@ -406,14 +479,6 @@ app.post('/showallemps',(req,res)=>{
             res.send(result.rows);
         }
     })
-    // indexx.displayallsalary(details.cid,client, (result,err)=> {
-    //   if (err) {
-    //     console.log("this error was encountered: " + err);
-    // } else {
-    //     console.log("no errors!"); 
-    //     res.send(result)
-    //   }
-    // });
   })
   
   //change the way this where query is executed, write separate endpoints if necessary
@@ -444,14 +509,6 @@ app.post('/showallemps',(req,res)=>{
             res.send("Inserted");
         }
     })
-    // indexx.insertsalaryrow(details.sid,details.paygrade ,details.currentsalary, details.app, details.bonus,details.extra,details.exrate,details.leave,details.paidl,details.leaverate, details.incentive,client, (result,err)=> {
-    //   if (err) {
-    //     console.log("this error was encountered: " + err);
-    // } else {
-    //     console.log("no errors!"); 
-    //     res.send(result)
-    //   }
-    // });
   })
   
   
@@ -465,14 +522,6 @@ app.post('/showallemps',(req,res)=>{
             res.send("Deleted");
         }
     });
-    // var s = indexx.deletesalary(details.sid,client,(result,err)=> {
-    //   if (err) {
-    //     console.log("this error was encountered: " + err);
-    // } else {
-    //     console.log("no errors!"); 
-    //     res.send(result)
-    //   }
-    // });
   })
   
   //Write this function differently so it either checks for the column or overwrites all columns
@@ -518,14 +567,6 @@ app.post('/showallemps',(req,res)=>{
             res.send(result.rows);
         }
     })
-    // indexx.monthsalary(details.cid,client,(result,err)=> {
-    //   if (err) {
-    //     console.log("this error was encountered: " + err);
-    // } else {
-    //     console.log("no errors!"); 
-    //     res.send(result)
-    //   }
-    // });
   })
   
   
@@ -542,14 +583,6 @@ app.post('/showallemps',(req,res)=>{
             res.send("Update success");
         }
     })
-    // indexx.yearlyupdate(details.cid,client,(result,err)=> {
-    //   if (err) {
-    //     console.log("this error was encountered: " + err);
-    // } else {
-    //     console.log("no errors!"); 
-    //     res.send(result)
-    //   }
-    // });
   })
 
 //************************************************************************************* */
