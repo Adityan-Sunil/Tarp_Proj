@@ -56,7 +56,7 @@ app.post("/login/", (req, res) => {
             res.send("reject");
             throw err;
         }
-        if (result.rows[0].emp_id) {
+        if (result.rows.length == 1) {
             req.session.user = result.rows[0].emp_id;
             req.session.company = result.rows[0].company_id;
             req.session.userType = result.rows[0].Emp_Designation;
@@ -166,12 +166,13 @@ app.post("/add_ticket/", (req, res) => {
     const ticket = req.body;
     const user = req.session.user;
     const company = req.session.company;
+    const closed = (ticket.status == "closed");
     const now = new Date();
 
-    db.query("INSERT INTO Customer_Service (Company_ID, Emp_ID, Registered_On, Deadline, Closed, Last_Update, Last_Update_Status, Description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
-    [company, user, now, ticket.deadline, false, now, "Open", ticket.description],
-    (err) => {
-        if (err, result) {
+    db.query("INSERT INTO Customer_Service (Company_ID, Reg_ID, Registered_On, Deadline, Closed, Last_Update, Last_Update_Status, Title, Description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
+    [company, user, ticket.registered_on, ticket.deadline, closed, now, ticket.status, ticket.title, ticket.description],
+    (err, result) => {
+        if (err) {
             console.log(err);
             res.send("reject");
         } else {
@@ -195,6 +196,20 @@ app.post("/update_ticket/", (req, res) => {
         }
     })
 });
+
+app.post("/modify_ticket/", (req, res) => {
+    const ticket = req.body;
+    db.query("UPDATE Customer_Service SET Registered_On = $1, Deadline = $2, Title = $3, Description = $4 WHERE Service_ID = $5 RETURNING *",
+    [ticket.registered_on, ticket.deadline, ticket.title, ticket.description, ticket.service_id],
+    (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send("reject");
+        } else {
+            res.send(result.rows[0]);
+        }
+    });
+})
 
 app.post("/delete_ticket/", (req, res) => {
     const ticket = req.body.service_id;
@@ -244,18 +259,41 @@ app.post("/fetch_tickets_by_emp/", (req, res) => {
     })
 })
 
-app.post("/fethc_ticket_by_id/", (req, res) => {
-    const ticket = req.session.service_id;
+app.post("/fetch_ticket_by_id/", (req, res) => {
+    const ticket = req.body.service_id;
     db.query("SELECT * FROM Customer_Service WHERE Service_ID = $1", [ticket], (err, result) => {
         if (err) {
             console.log(err);
             res.send("reject");
         } else {
-            res.send(reault.rows);
+            res.send(result.rows[0]);
         }
     })
 })
 
+app.post("/fetch_unassigned_tickets/", (req, res) => {
+    const company = req.session.company;
+    db.query("SELECT * FROM Customer_Service WHERE Company_ID = $1, Emp_ID = NULL", [company], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send("reject");
+        } else {
+            res.send(result.rows);
+        }
+    })
+})
+
+app.post("/claim_ticket/", (req, res) => {
+    const user = req.session.user;
+    const ticket = req.session.ticket;
+    db.query("UPDATE Customer_Service SET Emp_ID = $1 WHERE Service_ID = $2 RETURNING *", [user, ticket], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result.rows);
+        }
+    })
+})
 
 //***********************************Vendor Management******************************** */
 

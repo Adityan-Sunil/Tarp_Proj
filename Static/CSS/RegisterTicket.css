@@ -1,0 +1,158 @@
+#mainContainer {
+    width: 95vw;
+    height: 90vh;
+    box-shadow: 0px 6px 10px 2px rgb(219, 219, 219);
+    background-color: black;
+}
+
+#mainContent {
+    width: 100vw;
+    height: 100vh;
+}
+
+.viewSelect {
+    height: 5vh;
+}
+
+#view {
+    height: 85vh;
+    padding-top: 5vh;
+    background-color: white;
+}
+
+.viewContent {
+    height: 80vh;
+    padding: 3%;
+}
+
+
+.viewSelect button {
+    width: 100%;
+    height: 5vh;
+    border: none;
+    cursor: pointer;
+    padding: .5vw;
+    background-color: transparent;
+    transition: color 1s;
+}
+
+.viewSelect button:focus {
+    border: none;
+    outline: none;
+}
+
+.viewSelect button:hover {
+    border: none;
+    outline: none;
+}
+
+#slidingBG {
+    background-color: white;
+    width: calc(95vw / 3);
+    height: 5vh;
+    position: absolute;
+}
+
+.slideLeft {
+    transform: translateX(0%);
+    transition: transform 1s;
+}
+
+.slideMiddle {
+    transform: translateX(100%);
+    transition: transform 1s;
+}
+
+.slideRight {
+    transform: translateX(200%);
+    transition: transform 1s;
+}
+
+.row {
+    margin-bottom: 2vh;
+}
+
+form input[type="date"], form select {
+    width: 10vw;
+}
+
+form input[type="text"] {
+    width: 86%;
+}
+
+form select {
+    text-align-last: center;
+}
+
+form textarea {
+    width: 86%;
+    height: 30vh;
+    resize: none;
+}
+
+form button, #complaintBack {
+    width: 100%;
+    height: 5vh;
+    box-shadow: inset 0 0 0 0.01px teal;
+    color: black;
+    background-color: white;
+    cursor: pointer;
+    transition: box-shadow 0.5s, color 0.5s;
+}
+
+form button:hover, #complaintBack:hover {
+    color: white;
+    box-shadow: inset calc(85vw / 3) 0 0 0.01px teal;
+}
+
+.visibleContent {
+    opacity: 1;
+    transition: opacity 0.5s;
+}
+
+.hiddenContent {
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.tableHeader {
+    border-bottom: 1px solid black;
+}
+
+.tableRow {
+    padding: 2.5vh 0;
+    background-color: rgb(219, 219, 219);
+    cursor: pointer;
+    box-shadow: none;
+    transition: box-shadow 0.5s;
+}
+
+.tableRow:nth-of-type(odd) {
+    background-color: white;
+}
+
+.tableRow:hover {
+    box-shadow: 2px 5px 10px 2px gray;
+}
+
+.tableCells {
+    height: 65vh;
+    overflow-y: scroll;
+}
+
+.tableCells::-webkit-scrollbar {
+    display: none;
+}
+
+#complaintView {
+    padding-left: 10vw;
+    padding-right: 10vw;
+}
+
+#complaintView .row {
+    margin-bottom: 5vh;
+}
+
+#complaintDescription {
+    width: 90%;
+}
