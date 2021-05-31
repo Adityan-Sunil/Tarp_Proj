@@ -1,5 +1,5 @@
 #mainContainer {
-    width: 95vw;
+    width: 99vw;
     height: 90vh;
     box-shadow: 0px 6px 10px 2px rgb(219, 219, 219);
 }
@@ -145,7 +145,7 @@
 
 #slidingBG {
     background-color: white;
-    width: calc(79.167vw / 2);
+    width: 41.25vw;
     height: 5vh;
     position: absolute;
 }
@@ -312,5 +312,5 @@ form button:hover {
 
 #complaintBack:hover {
     color: white;
-    box-shadow: inset 24.5vw 0 0 0.01px teal;
+    box-shadow: inset 25.2vw 0 0 0.01px teal;
 }
