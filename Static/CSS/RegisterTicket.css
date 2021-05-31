@@ -155,4 +155,9 @@ form button:hover, #complaintBack:hover {
 
 #complaintDescription {
     width: 90%;
+    overflow-x: scroll;
+}
+
+#complaintDescription::-webkit-scrollbar {
+    display: none;
 }

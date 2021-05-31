@@ -1,0 +1,316 @@
+#mainContainer {
+    width: 95vw;
+    height: 90vh;
+    box-shadow: 0px 6px 10px 2px rgb(219, 219, 219);
+}
+
+#mainContent {
+    width: 100vw;
+    height: 100vh;
+}
+
+#selectPrimary {
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    height: 90vh;
+    padding: 0;
+    padding-top: 12.5vh;
+}
+
+#selectPrimary .row {
+    margin: 0px 0.45px;
+    margin-bottom: 4vh;
+    padding: 0;
+}
+
+#selectPrimary .row .col-12 {
+    padding: 0;
+}
+
+.selectBtn {
+    width: 100%;
+    height: 10vh;
+    color: white;
+    background-color: transparent;
+    cursor: pointer;
+    box-shadow: inset 0 0 0 0 white, 0 0 0 0 gray;
+    border: none;
+    outline: none;
+    transition: 0.5s;
+}
+
+.selectBtn:focus {
+    outline: none;
+    border: none;
+}
+
+.selectBtn::before, .selectBtn::after {
+    position: absolute;
+    content: "";
+    width: 0px;
+    height: 2px;
+    background-color: white;
+    transition: 0.25s linear;
+}
+
+.selectBtn::before {
+    top: 0;
+    right:0;
+}
+
+.selectBtn::after {
+    bottom: 0;
+    left:0;
+}
+
+.selectBtn:hover::before, .selectBtn:hover::after {
+    width: 100%;
+}
+
+.selectBtn span::before, .selectBtn span::after {
+    position: absolute;
+    content: "";
+    width: 2px;
+    height: 0px;
+    background-color: white;
+    transition: 0.25s linear;
+    transition-delay: 0.25s;
+}
+
+.selectBtn span::before {
+    top: 0;
+    left:0;
+}
+
+.selectBtn span::after {
+    bottom: 0;
+    right:0;
+}
+
+.selectBtn:hover span::before, .selectBtn:hover span::after {
+    height: 100%;
+}
+
+.selected {
+    box-shadow: inset calc(16.6vw - 0.5px) 0 0 0.1px white, -15px 5px 15px 0px gray !important;
+    color: black !important;
+    transition: 0.5s !important;
+}
+
+.selected::before {
+    width: 100% !important;    
+}
+
+.selected::after {
+    width: 100% !important;        
+}
+
+.selected span::before {
+    height: 100% !important;
+}
+
+.selected span::after {
+    height: 100% !important;
+}
+
+/* sub-content nav */
+#subNav {
+    background-color: black;
+}
+
+#subNav .col-6 {
+    padding: 0;
+}
+
+.navBtn {
+    height: 5vh;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: white;
+    transition: color 1s;
+}
+
+.navBtn:focus {
+    border: none;
+    outline: none;
+}
+
+.blackText {
+    color: black;
+}
+
+#slidingBG {
+    background-color: white;
+    width: calc(79.167vw / 2);
+    height: 5vh;
+    position: absolute;
+}
+
+.slideLeft {
+    transform: translateX(0%);
+    transition: transform 1s;
+}
+
+.slideRight {
+    transform: translateX(100%);
+    transition: transform 1s;
+}
+
+
+/* views */
+#view {
+    padding: 0;
+}
+
+.viewContent {
+    height: 85vh;
+}
+
+#openComplaintsView {
+    background-color: white;
+}
+
+#closedComplaintsView {
+    background-color: white;
+}
+
+#newComplaintsContent {
+    background-color: white;
+    height: 90vh;
+    margin: auto;
+}
+
+.visibleContent {
+    opacity: 1;
+    transition: opacity 0.5s;
+}
+
+.hiddenContent {
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+/* Table stuff */
+.tableHeader {
+    margin-top: 5vh;
+    border-bottom: 1px solid black;
+}
+
+.tableRow {
+    padding: 2.5vh 0;
+    margin-bottom: 2vh;
+    background-color: rgb(219, 219, 219);
+    cursor: pointer;
+    box-shadow: none;
+    /* height: 7.46vh; */
+    transition: box-shadow 0.5s, height 0.5s;
+}
+
+.tableRow:nth-of-type(odd) {
+    background-color: white;
+}
+
+.tableRow:hover, .highlighted {
+    box-shadow: 2px 5px 10px 2px gray;
+}
+
+.tableCells {
+    height: 65vh;
+    overflow-y: scroll;
+}
+
+.tableCells::-webkit-scrollbar {
+    display: none;
+}
+
+.expandableContent {
+    max-height: 0px;
+    overflow-y: hidden;
+    transition: max-height 0.5s;
+}
+
+.expandableContent .row {
+    margin-top: 3vh;
+}
+
+.expanded {
+    max-height: 25vh;
+}
+
+.expanded .tableCell {
+    max-height: 25vh;
+    overflow-y: scroll;
+}
+
+.expanded .tableCell::-webkit-scrollbar {
+    display: none;
+}
+
+.tableBtn {
+    cursor: pointer;
+    outline: none;
+    border: none;
+    width: 100%;
+    height: 5vh;
+    color: white;
+    background-color: teal;
+    box-shadow: inset 0 0 0 0.01px black;
+    transition: box-shadow 0.5s;
+}
+
+.tableBtn:hover {
+    box-shadow: inset 12vw 0 0 0.01px black;
+}
+
+
+#openComplaintsView .row, #closedComplaintsView .row {
+    margin-top: 2vh;
+}
+
+#closedComplaintsView .container-fluid {
+    margin-top: 10vh;
+}
+
+form select {
+    text-align-last: center;
+}
+
+form textarea {
+    width: 86%;
+    height: 30vh;
+    resize: none;
+}
+
+form p, #complaintDescription, #complaintResponse {
+    width: 86%;
+    max-height: 30vh;
+    overflow-y: scroll;
+}
+
+form p::-webkit-scrollbar, #complaintDescription::-webkit-scrollbar, #complaintResponse::-webkit-scrollbar {
+    display: none;
+}
+
+form button, #complaintBack {
+    width: 100%;
+    height: 5vh;
+    box-shadow: inset 0 0 0 0.01px teal;
+    color: black;
+    background-color: white;
+    cursor: pointer;
+    transition: box-shadow 0.5s, color 0.5s;
+}
+
+form button:hover {
+    color: white;
+    box-shadow: inset 12vw 0 0 0.01px teal;
+}
+
+#complaintBack:hover {
+    color: white;
+    box-shadow: inset 24.5vw 0 0 0.01px teal;
+}

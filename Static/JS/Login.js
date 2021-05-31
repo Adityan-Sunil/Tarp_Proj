@@ -18,7 +18,7 @@ $("#loginBtn").click(() => {
         success: (res) => {
             console.log(res);
             if (res == "accept") {
-                window.location = "RegisterTicket.html";
+                window.location = "ProcessTicket.html";
             }
         }
     });

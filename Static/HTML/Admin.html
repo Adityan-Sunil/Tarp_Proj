@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script defer src="Admin.js"></script>
+    <link rel="stylesheet" href="Admin.css">
+</head>
+<body>
+    <div class="d-flex align-items-center" id="mainContent"> 
+        <div class="container-flex mx-auto" id="mainContainer">
+            <div class="row m-auto">
+                <div class="col-2 p-0" id="viewSelect">
+                    <button type="button" class="viewSelectBtn">Option 1</button>
+                    <button type="button" class="viewSelectBtn">Option 2</button>
+                    <button type="button" class="viewSelectBtn">Option 3</button>
+                    <button type="button" class="viewSelectBtn">Option 4</button>
+                </div>
+                <div class="col-10 p-0" id="view">
+                    <div id="CompanyDetails">
+                        <div class="container-fluid w-100">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h3 class="display-3" id="companyName"></h1>
+                                </div>
+                                <div class="col-6">
+                                    <h4 class="display-4">Member Since: </h4>
+                                </div>
+                                <div class="col-6">
+                                    <span id="companyMemberSince"></span>
+                                </div>
+                                <div class="col-6">
+                                    <h4 class="display-4">Membership Type: </h4>
+                                </div>
+                                <div class="col-6">
+                                    <span id="companyMembershipType"></span>
+                                </div>
+                                <div class="col-6">
+                                    <h4 class="display-4">Number of employees: </h4>
+                                </div>
+                                <div class="col-6">
+                                    <span id="numEmployees"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

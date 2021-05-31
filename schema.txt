@@ -1,0 +1,91 @@
+BEGIN TRANSACTION;
+set transaction read write;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+create table Company (
+  Company_ID uuid DEFAULT uuid_generate_v4 () primary key,
+  Company_Name text not null,
+  Company_Reg timestamp not null,
+  Company_MSHP text not null,
+  MSHP_Last_Update timestamp not null
+);
+
+create table Orders (
+  Order_ID text not null,
+  Order_Item text not null,
+  Price_Per_Unit int not null,
+  Quantity int not null
+);
+
+create table Transactions (
+  Trans_ID uuid DEFAULT uuid_generate_v4 () primary key,
+  Trans_Date date not null,
+  Trans_Status text not null,
+  Trans_Type text not null,
+  Trans_Party text not null,
+  Trans_Amount bigint not null,
+  Order_ID text not null
+);
+
+create table Vendor (
+  Vendor_ID uuid DEFAULT uuid_generate_v4 () primary key,
+  Product_Name text not null,
+  Vendor_Addr text not null,
+  Vendor_Contact text not null,
+  Vendor_Email text not null unique
+);
+
+create table Inventory (
+  Product_ID text,
+  Product_Name text not null,
+  Quantity int not null,
+  Company_ID uuid not null,
+  foreign key(Company_ID) references Company(Company_ID)
+);
+
+create table Vendor_Reg (
+  Company_ID uuid not null,
+  foreign key(Company_ID) references Company(Company_ID),
+  Vendor_ID uuid not null,
+  foreign key(Vendor_ID) references Vendor(Vendor_ID),
+  Product_ID text not null
+);
+
+create table Payroll (
+  Salary_ID uuid DEFAULT uuid_generate_v4 () primary key,
+  Paygrade text not null,
+  Current_Sal int not null,
+  App_Rate bigint not null,
+  Bonus_Rate int not null,
+  Extra_Hours int not null,
+  Extra_Hour_Rate int not null,
+  Leave_Days int not null,
+  Extra_Incent int not null
+);
+
+create table Employee (
+  Emp_ID uuid DEFAULT uuid_generate_v4 () primary key,
+  Emp_Name text not null,
+  Emp_UserName text not null,
+  Emp_Password text not null,
+  Emp_JoinDate date not null,
+  Emp_Designation text not null,
+  Emp_Email text not null unique,
+  Salary_ID uuid,
+  foreign key(Salary_ID) references Payroll(Salary_ID),
+  Company_ID uuid not null,
+  foreign key(Company_ID) references Company(Company_ID)
+);
+
+create table Customer_Service (
+  Service_ID uuid DEFAULT uuid_generate_v4 () primary key,
+  Emp_ID uuid not null,
+  foreign key(Emp_ID) references Employee(Emp_ID),
+  Registered_On date not null,
+  Deadline date not null,
+  Closed boolean not null,
+  Last_Update date not null,
+  Last_Update_Status text not null
+);
+
+commit;

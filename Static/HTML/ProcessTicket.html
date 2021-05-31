@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="google" content="notranslate">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Product Name Here</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script defer src="checkLogin.js"></script>
+    <script defer src="ProcessTicket.js"></script>
+    <link rel="stylesheet" href="ProcessTicket.css">
+</head>
+<body>
+    <div class="d-flex align-items-center" id="mainContent">
+        <div class="container-fluid mx-auto" id="mainContainer">
+            <div class="row">
+                <div class="col-2" id="selectPrimary">
+                    <div class="row">
+                        <div class="col-12">
+                            <button class="selectBtn selected" id="myComplaintsBtn"><span>My Complaints</span></button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <button class="selectBtn" id="newComplaintsBtn"><span>New Complaints</span></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-10 p-0">
+                    <div class="container-fluid mx-0" id="view">
+                        <div id="myComplaintsContent" class="visibleContent">
+                            <div id="slidingBG" class="slideLeft"> &nbsp; </div>
+                            <div class="row m-auto" id="subNav">
+                                <div class="col-6">
+                                    <button class="navBtn blackText" id="openComplaintsBtn">Open Complaints</button>
+                                </div>
+                                <div class="col-6">
+                                    <button class="navBtn" id="closedComplaintsBtn">Closed Complaints</button>
+                                </div>
+                            </div>
+                            <div class="row m-auto">
+                                <div class="col-12 viewContent visibleContent" id="openComplaintsSelect">
+                                    <div class="container-fluid">
+                                        <div class="row text-center mx-auto">
+                                            <div class="col-5 tableHeader">
+                                                <h5 class="display-5">Ticket ID</h6>
+                                            </div>
+                                            <div class="col-3 tableHeader">
+                                                <h5 class="display-5">Title</h6>
+                                            </div>
+                                            <div class="col-2 tableHeader">
+                                                <h5 class="display-5">Deadline</h6>
+                                            </div>
+                                            <div class="col-2 tableHeader">
+                                                <h5 class="display-5">Status</h6>
+                                            </div>
+                                        </div>
+                                        <div class="tableCells" id="openComplaintsViewTable">
+                                            <div class="row text-center tableRow mx-0">
+                                                <div class="col-5 tableCell">
+                                                    85815753-f933-4d3c-9e25-54194b22648f
+                                                </div>
+                                                <div class="col-3 tableCell">
+                                                    Lorem Ipsum Dolores
+                                                </div>
+                                                <div class="col-2 tableCell">
+                                                    2021-05-16
+                                                </div>
+                                                <div class="col-2 tableCell">
+                                                    2021-05-16
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                </div>
+                                
+                                <div class="col-12 viewContent hiddenContent" id="openComplaintsView">
+                                    <div class="container-fluid mt-5">
+                                        <form id="updateForm">
+                                            <div class="row">
+                                                <div class="col-2 text-right">
+                                                    Title: 
+                                                </div>
+                                                <div class="col-3 text-left" id="updateTitle">
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-2 text-right">
+                                                    ID: 
+                                                </div>
+                                                <div class="col-3 text-left" id="updateID">
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-2 text-right">
+                                                    Registered On:
+                                                </div>
+                                                <div class="col-2 text-left" id="updateRegDate">
+                                                    
+                                                </div>
+                                                <div class="col-2 text-right">
+                                                    Last Updated: 
+                                                </div>
+                                                <div class="col-1 text-left" id="updateUpdDate">
+                                                    
+                                                </div>
+                                                <div class="col-2 text-right">
+                                                    Deadline: 
+                                                </div>
+                                                <div class="col-3 text-left" id="updateDeadline">
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-2 text-right">
+                                                    Posted by:
+                                                </div>
+                                                <div class="col-3 text-left" id="updateEmployee">
+                                                    
+                                                </div>
+                                                <div class="col-1 text-right">
+                                                    Status:
+                                                </div>
+                                                <div class="col-2 text-left">
+                                                    <select name="status" id="updateStatus">
+                                                        <option value="Open">Open</option>
+                                                        <option value="Processing">Processing</option>
+                                                        <option value="Closed">Closed</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-2 text-right">
+                                                    Description:
+                                                </div>
+                                                <div class="col-10 text-left">
+                                                    <p id="updateDescription"></p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-2 text-right">
+                                                    Response:
+                                                </div>
+                                                <div class="col-10 text-left">
+                                                    <textarea name="message" id="updateResponse"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-2 offset-3">
+                                                    <button type="button" id="updateSubmit">Update</button>
+                                                </div>
+                                                <div class="col-2 offset-2">
+                                                    <button type="button" id="updateBack">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 viewContent hiddenContent" id="closedComplaintsSelect">
+                                    <div class="container-fluid">
+                                        <div class="row text-center">
+                                            <div class="col-5 tableHeader">
+                                                <h5 class="display-5">Ticket ID</h6>
+                                            </div>
+                                            <div class="col-3 tableHeader">
+                                                <h5 class="display-5">Title</h6>
+                                            </div>
+                                            <div class="col-2 tableHeader">
+                                                <h5 class="display-5">Date Filed</h6>
+                                            </div>
+                                            <div class="col-2 tableHeader">
+                                                <h5 class="display-5">Last Updated</h6>
+                                            </div>
+                                        </div>
+                                        <div class="tableCells" id="closedComplaintsViewTable">
+                                            <div class="row text-center tableRow mx-0">
+                                                <div class="col-5 tableCell">
+                                                    85815753-f933-4d3c-9e25-54194b22648f
+                                                </div>
+                                                <div class="col-3 tableCell">
+                                                    Lorem Ipsum Dolores
+                                                </div>
+                                                <div class="col-2 tableCell">
+                                                    2021-05-16
+                                                </div>
+                                                <div class="col-2 tableCell">
+                                                    2021-05-16
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 viewContent hiddenContent" id="closedComplaintsView">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-2 text-right">
+                                                Title: 
+                                            </div>
+                                            <div class="col-3 text-left" id="complaintTitle">
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-2 text-right">
+                                                ID: 
+                                            </div>
+                                            <div class="col-3 text-left" id="complaintID">
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-2 text-right">
+                                                Registered On:
+                                            </div>
+                                            <div class="col-2 text-left" id="complaintRegDate">
+                                                
+                                            </div>
+                                            <div class="col-2 text-right">
+                                                Last Updated: 
+                                            </div>
+                                            <div class="col-2 text-left" id="complaintUpdDate">
+                                                
+                                            </div>
+                                            <div class="col-2 text-right">
+                                                Deadline: 
+                                            </div>
+                                            <div class="col-2 text-left" id="complaintDeadline">
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-2 text-right">
+                                                Overseen by:
+                                            </div>
+                                            <div class="col-2 text-left" id="complaintEmployee">
+                                                
+                                            </div>
+                                            <div class="col-2 text-right">
+                                                Status:
+                                            </div>
+                                            <div class="col-2 text-left" id="complaintStatus">
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-2 text-right">
+                                                Description:
+                                            </div>
+                                            <div class="col-10 text-left">
+                                                <p id="complaintDescription"></p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-2 text-right">
+                                                Response:
+                                            </div>
+                                            <div class="col-10 text-left">
+                                                <p id="complaintResponse"></p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-4 offset-4">
+                                                <button type="button" id="complaintBack">Back</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        <div class="row hiddenContent" id="newComplaintsContent">
+                            <div class="container-fluid">
+                                <div class="row text-center mx-auto">
+                                    <div class="col-5 tableHeader">
+                                        <h5 class="display-5">Ticket ID</h6>
+                                    </div>
+                                    <div class="col-3 tableHeader">
+                                        <h5 class="display-5">Title</h6>
+                                    </div>
+                                    <div class="col-2 tableHeader">
+                                        <h5 class="display-5">Deadline</h6>
+                                    </div>
+                                    <div class="col-2 tableHeader">
+                                        <h5 class="display-5">Status</h6>
+                                    </div>
+                                </div>
+                                <div class="tableCells" id="newComplaintsViewTable">
+                                    <div class="row text-center tableRow mx-0">
+                                        <div class="col-5 tableCell">
+                                            85815753-f933-4d3c-9e25-54194b22648f
+                                        </div>
+                                        <div class="col-3 tableCell">
+                                            Lorem Ipsum Dolores
+                                        </div>
+                                        <div class="col-2 tableCell">
+                                            2021-05-16
+                                        </div>
+                                        <div class="col-2 tableCell">
+                                            2021-05-16
+                                        </div>
+                                        <div class="container-fluid expandableContent">
+                                            <div class="row">
+                                                <div class="col-2 tableCell text-right">
+                                                    Description: 
+                                                </div>
+                                                <div class="col-4 tableCell">
+                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati sit vero facilis asperiores. Modi ad explicabo officia reiciendis nostrum consequuntur aut mollitia facere, incidunt alias eius minima dolore, voluptate enim? Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati sit vero facilis asperiores. Modi ad explicabo officia reiciendis nostrum consequuntur aut mollitia facere, incidunt alias eius minima dolore, voluptate enim? Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati sit vero facilis asperiores. Modi ad explicabo officia reiciendis nostrum consequuntur aut mollitia facere, incidunt alias eius minima dolore, voluptate enim?</p>
+                                                </div>
+                                                <div class="col-2 tableCell text-right">
+                                                    Registered on: 
+                                                </div>
+                                                <div class="col-2 tableCell">
+                                                    2021-05-16
+                                                </div>
+                                                <div class="col-2 tableCell">
+                                                    <button class="tableBtn" onclick="claimTicket()">Claim Ticket</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>   
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -43,7 +43,7 @@ app.use(session({
     saveUninitialized:false,
     resave:false,
     unset:'destroy',
-    cookie:{maxAge:3600*24}
+    cookie:{maxAge:3600 * 24 * 1000}
 }));
 
 //************************************Login and Signup********************************* */
@@ -189,6 +189,7 @@ app.post("/update_ticket/", (req, res) => {
     [now, ticket.status, closed, ticket.message, ticket.service_id],
     (err, result) => {
         if (err) {
+            console.log(ticket)
             console.log(err);
             res.send("reject");
         } else {
@@ -199,8 +200,9 @@ app.post("/update_ticket/", (req, res) => {
 
 app.post("/modify_ticket/", (req, res) => {
     const ticket = req.body;
-    db.query("UPDATE Customer_Service SET Registered_On = $1, Deadline = $2, Title = $3, Description = $4 WHERE Service_ID = $5 RETURNING *",
-    [ticket.registered_on, ticket.deadline, ticket.title, ticket.description, ticket.service_id],
+    const now = new Date();
+    db.query("UPDATE Customer_Service SET Registered_On = $1, Deadline = $2, Title = $3, Description = $4, Last_Update_Status = $5, Last_Update = $6 WHERE Service_ID = $7 RETURNING *",
+    [ticket.registered_on, ticket.deadline, ticket.title, ticket.description, ticket.status, now, ticket.service_id],
     (err, result) => {
         if (err) {
             console.log(err);
@@ -237,7 +239,7 @@ app.post("/fetch_tickets_by_company/", (req, res) => {
 
 app.post("/fetch_tickets_by_reg/", (req, res) => {
     const user = req.session.user;
-    db.query("SELECT * FROM Customer_Service WHERE Reg_ID = $1", [user], (err, result) => {
+    db.query("SELECT * FROM Customer_Service WHERE Reg_ID = $1 ORDER BY Deadline DESC", [user], (err, result) => {
         if (err) {
             console.log(err);
             res.send("reject");
@@ -249,7 +251,7 @@ app.post("/fetch_tickets_by_reg/", (req, res) => {
 
 app.post("/fetch_tickets_by_emp/", (req, res) => {
     const user = req.session.user;
-    db.query("SELECT * FROM Customer_Service WHERE Emp_ID = $1", [user], (err, result) => {
+    db.query("SELECT * FROM Customer_Service WHERE Emp_ID = $1 ORDER BY Last_Update DESC", [user], (err, result) => {
         if (err) {
             console.log(err);
             res.send("reject");
@@ -273,7 +275,7 @@ app.post("/fetch_ticket_by_id/", (req, res) => {
 
 app.post("/fetch_unassigned_tickets/", (req, res) => {
     const company = req.session.company;
-    db.query("SELECT * FROM Customer_Service WHERE Company_ID = $1, Emp_ID = NULL", [company], (err, result) => {
+    db.query("SELECT * FROM Customer_Service WHERE Company_ID = $1 AND Emp_ID IS NULL ORDER BY Last_Update DESC", [company], (err, result) => {
         if (err) {
             console.log(err);
             res.send("reject");
@@ -281,16 +283,18 @@ app.post("/fetch_unassigned_tickets/", (req, res) => {
             res.send(result.rows);
         }
     })
+    console.log("comapny: " + company);
 })
 
 app.post("/claim_ticket/", (req, res) => {
     const user = req.session.user;
-    const ticket = req.session.ticket;
+    const ticket = req.body.ticket;
     db.query("UPDATE Customer_Service SET Emp_ID = $1 WHERE Service_ID = $2 RETURNING *", [user, ticket], (err, result) => {
         if (err) {
             console.log(err);
         } else {
             res.send(result.rows);
+            console.log(result.rows);
         }
     })
 })

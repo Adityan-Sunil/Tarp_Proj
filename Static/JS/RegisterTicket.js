@@ -48,7 +48,7 @@ $("#complaintBtn").click(() => {
     $.post("/fetch_tickets_by_reg/", (res) => {
         console.log(res);
         for (const ticket of res) {
-            addToComplaintView(ticket);
+            addToView(ticket, "#complaintViewTable");
         }
         $(".tableRow").click(function () {
             viewTicket(this.id);
@@ -76,6 +76,19 @@ $("#modifyBtn").click(() => {
     $(position).addClass("hiddenContent");
     $(position).removeClass("visibleContent");
     const prevPosition = position;
+
+    $("#modifyViewTable").html("");
+    $.post("/fetch_tickets_by_reg/", (res) => {
+        for (const ticket of res) {
+            if (ticket.last_update_status != "Closed") {
+                addToView(ticket, "#modifyViewTable");
+            }
+        }
+        $(".tableRow").click(function () {
+            modifyTicket(this.id);
+        })
+    });
+
     setTimeout(() => {
         $(prevPosition).hide();
         $("#modifySelectView").show();
@@ -124,16 +137,75 @@ function viewTicket(ticketID) {
     })
 }
 
+function modifyTicket(ticketID) {
+    if (position == "#modifyView") return;
+    $(position).addClass("hiddenContent");
+    $(position).removeClass("visibleContent");
+    const prevPosition = position;
+    setTimeout(() => {
+        $(prevPosition).hide();
+        $("#modifyView").show();
+        $("#modifyView").addClass("visibleContent");
+        $("#modifyView").removeClass("hiddenContent");
+    }, 500);
+    position = "#modifyView";
+
+    $.post("/fetch_ticket_by_id/", {service_id: ticketID}, (res) => {
+        if (res && res != "reject") {
+            console.log(res);
+            const regDate = new Date(res.registered_on);
+            const lastUpd = new Date(res.last_update);
+            const deadline = new Date(res.deadline);
+            var overseer = res.emp_id;
+            if (!overseer || overseer == "") {
+                overseer = "None";
+                res.update_message = "N/A";
+            }
+            $("#modifyTitle").val(res.title);
+            $("#modifyID").text(res.service_id);
+            $("#modifyRegDate").value = regDate;
+            $("#modifyUpdDate").text(lastUpd.getDate() + "-" + (lastUpd.getMonth() + 1) + "-" + lastUpd.getFullYear());
+            $("#modifyDeadline").value = deadline;
+            $("#modifyEmployee").text(overseer);
+            $("#modifyStatus").val(res.last_update_status);
+            $("#modifyDescription").val(res.description);
+            $("#modifyResponse").text(res.update_message);
+        } else {
+            console.log(res);
+        }
+    })
+}
+
 $("#registerSubmit").click(() => {
     postFormContent("/add_ticket/", $("#registerForm"), (res) => {
         if (res == "reject") {
             console.log("something went wrong");
         } else {
-            console.log(res);
+            const now = new Date();
+            $("input[type=date]").each((i, el) => {
+                el.value = now;
+            });
+            $("#status").val("Open");
+            $("#title").val("");
+            $("#description").val("");
+            viewTicket(res.service_id);
         }
     })
 })
 
+$("#modifySubmit").click(() => {
+    postFormContent("/modify_ticket/", $("#modifyForm"), (res) => {
+        if (res == "reject") {
+            console.log("something went wrong");
+        } else {
+            viewTicket(res.service_id);
+        }
+    }, {service_id: $("#modifyID").text()})
+});
+
+$("#modifyBack").click(() => {
+    $("#modifyBtn").click();
+})
 
 function changeTextColor(blackInd) {
     $(".viewSelectBtn").each((i, el) => {
@@ -142,12 +214,15 @@ function changeTextColor(blackInd) {
     $(".viewSelectBtn")[blackInd].style.color = "black";
 }
 
-function postFormContent(route, form, callback) {
+function postFormContent(route, form, callback, extras = {}) {
     const nonJSONRes = $(form).serializeArray();
     var JSONRes = {};
     $.map(nonJSONRes, (field) => {
         JSONRes[field.name] = field.value;
     });
+    for (const fieldName in extras) {
+        JSONRes[fieldName] = extras[fieldName];
+    }
     console.log(JSONRes);
     $.ajax({
         url: route,
@@ -158,11 +233,11 @@ function postFormContent(route, form, callback) {
     });
 }
 
-function addToComplaintView(ticket) {
+function addToView(ticket, table) {
     console.log(ticket);
     const regDate = new Date(ticket.registered_on);
     const lastUpd = new Date(ticket.last_update);
-    $("#complaintViewTable").append(`
+    $(table).append(`
     <div class="row text-center tableRow mx-0" id=` + ticket.service_id + `>
         <div class="col-5 tableCell">
             ` + ticket.service_id + `
