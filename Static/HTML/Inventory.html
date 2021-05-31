@@ -27,7 +27,7 @@
                             <a class="nav-link" href="#">Dashboard</a>
                         </li>
                         <li class="ms-auto nav-item align-self-end">
-                            <a href="Login.html" class="nav-link">Login</a>
+                            <a href="Login.html" class="nav-link login-btn">Login</a>
                         </li>
                     </ul>
                 </div>
@@ -38,54 +38,54 @@
                 <div class="sidebar col pt-4">
                     <ul class="nav nav-pills flex-column justify-content-end list-group-flush" id="pills-tab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-register" role="tab" aria-controls="pills-register" aria-selected="true">Add New Product</a>
+                            <a class="nav-link active text-white" data-bs-toggle="pill" data-bs-target="#pills-view" role="tab" aria-controls="pills-view" aria-selected="false">View Inventory</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" data-bs-toggle="pill" data-bs-target="#pills-view" role="tab" aria-controls="pills-view" aria-selected="false">View Inventory</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-past" role="tab" aria-controls="pills-past" aria-selected="false" onclick="drawGraphs()">Past Orders</a>
+                            <a class="nav-link text-white" data-bs-toggle="pill" data-bs-target="#pills-past" role="tab" aria-controls="pills-past" aria-selected="false" onclick="drawGraphs()">Past Orders</a>
                         </li>
                     </ul>
                 </div>
                 <div class="col-10">
                     <div class="tab-content container pt-4" id="pills-tabContent">
-                        <div class="content tab-pane fade show" id="pills-register" role="tabpanel" aria-labelledby="pills-register-tab">
-                            <div class="content-header">
-                                <h1>Product Entry</h1>
-                            </div>
-                            <div class="content-body">
-                                <div class="shadow prod-search">
-                                    <h3>Enter details of the product</h3>
-                                    <form id="add_product">
-                                        <table>
-                                            <tr>
-                                                <td>Product ID</td>
-                                                <td><input type="text" name="prod_id"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Product Name</td>
-                                                <td><input type="text" name="prod_name"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Quantity</td>
-                                                <td><input type="text" name="quant"></td>
-                                            </tr>
-                                            <tr>
-                                                <td><button id="not-exist" class="inp-btn" onclick="regProduct(event)">Submit</button></td>
-                                                <td></td>
-                                            </tr>
-                                        </table>
-                                    </form>
+                        <div class="add-product-modal-bg" id="add-product-modal">
+                            <div class="add-product-modal">
+                                <div class="add-product-modal-header">
+                                    <h1>Product Entry</h1>
+                                </div>
+                                <div class="add-product-modal-body">
+                                    <div >
+                                        <h3>Enter details of the product</h3>
+                                        <form id="add_product">
+                                            <table>
+                                                <tr>
+                                                    <!-- <td>Product ID</td> -->
+                                                    <td><input type="text" name="prod_id" placeholder="Product ID"></td>
+                                                </tr>
+                                                <tr>
+                                                    <!-- <td>Product Name</td> -->
+                                                    <td><input type="text" name="prod_name" placeholder="Product Name"></td>
+                                                </tr>
+                                                <tr>
+                                                    <!-- <td>Quantity</td> -->
+                                                    <td><input type="text" name="quant" placeholder="Quantity"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><button id="add_prod-btn" class="inp-btn" onclick="regProduct(event)">Submit</button></td>
+                                                    <!-- <td></td> -->
+                                                </tr>
+                                            </table>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="content tab-pane fade show active" id="pills-view" role="tabpanel" aria-labelledby="pills-trans-tab">
                             <div class="content-header">
                                <h1>Inventory</h1>
+                               <button id="add_product_new" onclick="showAddModal()">Add Product</button>
                             </div>
                             <div class="content-body">
-                                <table id="past_orders">
+                                <table id="past_orders" class="table table-striped">
                                     <tr>
                                         <td>Sno</td>
                                         <td>Product_ID</td>

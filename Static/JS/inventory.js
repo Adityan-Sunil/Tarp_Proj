@@ -1,7 +1,8 @@
 let past_orders;
-let company = '488817f7-c6ed-4f63-937b-b9ef716b5134';
+let company = "7b4bcde6-0c6e-4b37-b5d8-b36891b3ba87";
 let loaded = false;
 getInvent();
+$("#add-product-modal").hide();
 $("#updateFormModal").hide();
 function getCompany(){
     sendData("","/user", (res)=>{
@@ -33,6 +34,17 @@ function getInvent(){
             },false)
             //TODO display in table
     }
+}
+$("#add-product-modal").click(function (e) { 
+    e.preventDefault();
+    if(e.target == this)
+        closeModal();
+});
+function showAddModal() {
+    $("#add-product-modal").show();
+}
+function closeModal() {
+    $("#add-product-modal").hide();
 }
 function showUpdateForm(th){
     var id = th.dataset.id;
@@ -102,13 +114,13 @@ function drawGraphs() {
                 type = 'bar'
             addtoGraph(type,"graph"+(count++).toString(), data,title);
         });
-        sendData({ID:'488817f7-c6ed-4f63-937b-b9ef716b5134'},"/orderGraph",(res)=>{
+        sendData({company:company},"/orderGraph",(res)=>{
             console.log(res);
             var graphData = JSON.parse(res);
             addtoGraph('doughnut',"graph3",checkNull(graphData.Buy, "transaction"),"Incoming Transactions");
             addtoGraph('doughnut',"graph4", checkNull(graphData.Sell, "transaction"),"Outgoing Transactions");
         }, true)
-        //addtoGraph("graph1", )
+        addtoGraph("graph1", )
     })
     sendData({company:company}, "orderGraph", (res)=>{
         console.log(JSON.parse(res));
@@ -148,6 +160,7 @@ function regProduct(e){
         console.log(res);
         loaded = false;
         getInvent();
+        closeModal();
     }, false);
 }
 

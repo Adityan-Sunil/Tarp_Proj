@@ -1,0 +1,33 @@
+div {
+    height:10%;
+    border: 1px solid black;
+}
+.container {
+    width:100%;
+    height:90vh;
+}
+.content {
+    margin:1%;
+    /* min-height:100%; */
+    height:95%;
+}
+.content-tile {
+    margin:1%;
+    /* min-height:40%; */
+    height:20%;
+}
+.stock-model {
+    display:flex;
+}
+.stock-model-content {
+    margin:1%;
+    height:40%;
+    /* min-height:20%; */
+}
+.stock-action-pred {
+    margin-left:auto;  
+    width:20%;
+}
+#stock-price-pred {
+    width:78%;
+}

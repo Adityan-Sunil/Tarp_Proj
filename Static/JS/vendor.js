@@ -1,4 +1,4 @@
-let company;
+let company = "7b4bcde6-0c6e-4b37-b5d8-b36891b3ba87";
 let loadedVendors = false;
 let loadedTransactions = false;
 
@@ -37,13 +37,13 @@ function confirm_reg_vendor(e){
 
 function getTransactions(){
     if(!loadedTransactions){
-        sendData({ID:'488817f7-c6ed-4f63-937b-b9ef716b5134'},"/orderGraph",(res)=>{
+        sendData({ID:company},"/orderGraph",(res)=>{
             console.log(res);
             var graphData = JSON.parse(res);
             addtoGraph("doughnut","buy_chart",checkNull(graphData.Buy, "transaction"),"Incoming");
             addtoGraph("doughnut","sell_chart", checkNull(graphData.Sell, "transaction"),"Outgoing");
         }, true)
-        sendData({ID:'488817f7-c6ed-4f63-937b-b9ef716b5134'},"/orders",(res)=>{
+        sendData({ID:company},"/orders",(res)=>{
             console.log(JSON.parse(res));
             res = JSON.parse(res);
             var index = 1;
@@ -106,7 +106,7 @@ function unregVendor(e){
 }
 function viewVendors(){
     console.log("ViewVendors");
-    data = {"ID":'488817f7-c6ed-4f63-937b-b9ef716b5134'};
+    data = {"ID":company};
     if(!loadedVendors){
         sendData(data,"/viewVendors",(res)=>{
             var result = JSON.parse(res);

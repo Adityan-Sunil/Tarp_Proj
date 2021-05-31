@@ -4,16 +4,6 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser')
 require("dotenv").config();
 
-
-
-const mustacheExpress = require('mustache-express');
-const mustache = mustacheExpress();
-
-mustache.cache = null;
-app.engine('mustache', mustache);
-app.set('view engine', 'mustache');
-
-
 const pg = require("pg");
 const e = require('express');
 const db = new pg.Client({
@@ -25,7 +15,6 @@ db.connect((err)=>{
     if(err)
         console.log(err);
 });
-
 
 //Declare Middlewares here
 app.use(express.json());
@@ -133,6 +122,8 @@ app.get("/user/", (req, res) => {
     }
 })
 //************************************************************************************* */
+
+
 app.post("/company/", (req, res) => {
     const CompanyID = req.body.Company_ID;
     console.log(req.body);
@@ -299,6 +290,18 @@ app.post("/claim_ticket/", (req, res) => {
     })
 })
 
+app.post("/service_graph", (req,res) => {
+    const company = req.body;
+    db.query("WITH true_p AS (SELECT count(*) AS True FROM customer_service WHERE closed = true and company_id = $1), false_p AS ( SELECT count(*) as False FROM customer_service WHERE closed = false and company_id = $1) select tp.* , fp.* as fp1 from true_p as tp, false_p as fp", [company.company], (err,result) => {
+        if(err){
+            console.log(err);
+        }else{
+            console.log(result.rows);
+            res.send(result.rows)
+        }
+    })
+})
+
 //***********************************Vendor Management******************************** */
 
 //route for adding already existing vendor
@@ -329,6 +332,7 @@ app.post('/adduVendor',(req,res)=>{
     console.log(details);
 })
 
+
 app.post('/viewVendors', (req,res)=>{
     var details = req.body;
     console.log(details);
@@ -342,6 +346,7 @@ app.post('/viewVendors', (req,res)=>{
     })
 })
 
+
 //route for retrieving data from vendor
 app.post('/getInvent',(req,res)=>{
     var details = JSON.parse(req.body);
@@ -354,6 +359,8 @@ app.post('/getInvent',(req,res)=>{
         }
     })
 })
+
+
 //route for checking for vendors
 app.post('/checkVend',(req,res)=>{
     var details = JSON.parse(req.body);
@@ -367,6 +374,8 @@ app.post('/checkVend',(req,res)=>{
             res.send(result)
     })
 })
+
+
 //confirm vendor and add to reg_vendor table
 app.post("/confirmVendor",(req,res)=>{
     var id = req.body.ID;
@@ -394,10 +403,10 @@ app.post("/orders",(req,res) =>{
     })
 })
 
-app.post("/orderGraph", (req,res)=>{
+app.post("/orderGraphParty", (req,res)=>{
     var id = req.body.ID;
     var output = {};
-    db.query("select trans_type, trans_status, count(trans_status) from (select * from transactions where company_id = $1) as T1 group by trans_status, trans_type;", [id],(err,result)=>{
+    db.query("select trans_type, trans_status, count(trans_status) from (select * from transactions where company_id = $1 and trans_party = $2) as T1 group by trans_status, trans_type;", [id],(err,result)=>{
         if(err){
             console.log(err)
             res.send("failed");
@@ -683,6 +692,30 @@ app.post("/graphData", (req,res)=>{
             result.forEach(element => {
                 output.push(element.rows);
             });
+            console.log(output);
+            res.send(JSON.stringify(output));
+        }
+    })
+})
+
+app.post("/orderGraph", (req,res)=>{
+    var id = req.body.company;
+    var output = {};
+    db.query("select trans_type, trans_status, count(trans_status) from (select * from transactions where company_id = $1) as T1 group by trans_status, trans_type;", [id],(err,result)=>{
+        if(err){
+            console.log(err)
+            res.send("failed");
+        }else{
+            console.log(result.rows);
+            result.rows.forEach(result =>{
+                if(!output.hasOwnProperty(result.trans_type)){
+                    var count = {}
+                    count[result.trans_status]  = result.count
+                    output[result.trans_type] = count
+                }else {
+                    output[result.trans_type][result.trans_status] = result.count;
+                }
+            })
             console.log(output);
             res.send(JSON.stringify(output));
         }

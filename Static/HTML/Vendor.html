@@ -27,7 +27,7 @@
                             <a class="nav-link" href="#">Dashboard</a>
                         </li>
                         <li class="ms-auto nav-item align-self-end">
-                            <a href="Login.html" class="nav-link">Login</a>
+                            <a href="Login.html" class="nav-link login-btn">Login</a>
                         </li>
                     </ul>
                 </div>
@@ -38,13 +38,13 @@
                 <div class="sidebar col pt-4">
                     <ul class="nav nav-pills flex-column justify-content-end list-group-flush" id="pills-tab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" data-bs-toggle="pill" data-bs-target="#pills-register" role="tab" aria-controls="pills-register" aria-selected="true">Register New Vendor</a>
+                            <a class="nav-link active text-white" data-bs-toggle="pill" data-bs-target="#pills-register" role="tab" aria-controls="pills-register">Register New Vendor</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-view" role="tab" aria-controls="pills-view" aria-selected="false" onclick="viewVendors()">View Registered Vendors</a>
+                        <li class="nav-item text-muted">
+                            <a class="nav-link text-white" data-bs-toggle="pill" data-bs-target="#pills-view" role="tab" aria-controls="pills-view"  onclick="viewVendors()">View Registered Vendors</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-trans" role="tab" aria-controls="pills-trans" aria-selected="false" onclick="getTransactions()">Vendor Transactions</a>
+                        <li class="nav-item text-muted">
+                            <a class="nav-link text-white" data-bs-toggle="pill" data-bs-target="#pills-trans" role="tab" aria-controls="pills-trans"  onclick="getTransactions()">Vendor Transactions</a>
                         </li>
                     </ul>
                 </div>
@@ -117,15 +117,17 @@
                                         <canvas id="sell_chart"></canvas>
                                     </div>
                                 </div>
-                                <table id="transactions">
-                                    <tr>
-                                        <td>Sno</td>
-                                        <td>Order_ID</td>
-                                        <td>Date</td>
-                                        <td>Price</td>
-                                        <td>Quantity</td>
-                                        <td>Status</td>
-                                    </tr>
+                                <table id="transactions" class="table table-striped">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <td>Sno</td>
+                                            <td>Order_ID</td>
+                                            <td>Date</td>
+                                            <td>Price</td>
+                                            <td>Quantity</td>
+                                            <td>Status</td>
+                                        </tr>
+                                    </thead>
                                 </table>
                             </div>
                         </div>

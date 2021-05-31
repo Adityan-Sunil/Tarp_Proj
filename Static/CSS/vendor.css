@@ -1,11 +1,25 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway:800|Merriweather+Sans|Share+Tech+Mono");
+:root{
+    margin:0;
+    padding:0;
+    font-family: Arial, Helvetica, sans-serif;
+    --success: rgb(163, 255, 228);
+    --danger: rgb(255, 139, 139);
+    --pending: rgb(247, 255, 177);
+    --buttons:#52ab98;
+    --navbar:#f2f2f2;
+    --conten-bg:white;
+    --heavy:#2b6777;
+    --shadow:#c8d8e4;
+    
+}
 body{
     font-family: "Verdana", sans-serif;
     height:99.6vh;
-    background: #6d7993;
+    /* background: #6d7993; */
 }
 .parent{
-    background: #6d7993;
+    /* background: #6d7993; */
     color:white;
 }
 .navbar{
@@ -70,37 +84,58 @@ h3{
     text-transform: uppercase;
 }
 .shadow{
-    box-shadow: 0px 0px 10px 2px rgb(219, 219, 219);
+    box-shadow: 0px 0px 10px 5px var(--shadow);
 }
 table{
     width:100%;
     border-collapse: collapse;
+    padding:0;
+    border:1px solid var(--shadow)
 }
 tr{
-    height:6vh;
-    border:1px solid black;
+    height:3vh;
+    padding:0;
 }
 td{
     text-align: center;
-    border:1px  solid black;
 }
 nav{
-    border:1px solid black;
-    background: #d5d5d5;
+    background: var(--navbar);
     color:black;
+    border-bottom:1px solid var(--shadow)
 }
 .sidebar{
-    background: #96858f;
+    background: var(--heavy);
 }
 .content-body div{
-    background: #9099a2;
+    background: var(--shadow);
 }
 .nav-link{
-    color:white;
     text-transform:uppercase;
+    margin:1% 0;
+    text-align: center;
 }
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
     color: white !important;
-    background-color: #9099a2 !important;
+    background-color: var(--buttons)!important;
 }
-
+a {
+    color:white
+}
+.login-btn {
+    color:var(--buttons) !important;
+    font-weight: 500;
+}
+.inp-btn {
+    border:0;
+    background: var(--buttons);
+    width:10%;
+    border-radius: 5px;
+    color:white
+}
+tr {
+    border-bottom:var(--heavy);
+}
+td {
+    padding:0;
+}
