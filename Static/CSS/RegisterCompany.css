@@ -1,0 +1,121 @@
+#mainContainer {
+    width: 99vw;
+    height: 90vh;
+    box-shadow: 0px 6px 10px 2px rgb(219, 219, 219);
+    overflow-y: scroll;
+}
+
+#mainContainer::-webkit-scrollbar {
+    display: none;
+}
+
+#mainContent {
+    width: 100vw;
+    height: 100vh;
+}
+
+#table {
+    width: 50vw;
+    max-height: 50vh;
+    border: 5px solid black;
+}
+
+#forms, #certificates {
+    max-height: 45vh;
+    overflow-y: scroll;
+}
+
+#forms::-webkit-scrollbar, #certificates::-webkit-scrollbar {
+    display: none;
+}
+
+#navRow {
+    background-color: black;
+    border-bottom: 5px solid black;
+}
+
+#slidingBG {
+    background-color: white;
+    width: calc(25vw - 5px);
+    height: 5vh;
+    position: absolute;
+}
+
+.slideLeft {
+    transform: translateX(0%);
+    transition: transform 1s;
+}
+
+.slideRight {
+    transform: translateX(100%);
+    transition: transform 1s;
+}
+
+.visibleContent {
+    opacity: 1;
+    transition: opacity 0.5s;
+}
+
+.hiddenContent {
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.tableBtn {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 5vh;
+    background-color: transparent;
+    color: white;
+    transition: 0.5s;
+}
+
+.blackText {
+    color: black;
+}
+
+.tableBtn:hover {
+    border: none;
+    outline: none;
+}
+
+.tableBtn:focus {
+    border: none;
+    outline: none;
+}
+
+.tableCell {
+    padding: 0;
+}
+
+.tableRow {
+    margin: 2vh 0px;
+}
+
+.tableHeader {
+    padding-bottom: 2vh;
+    border-bottom: 2px solid black;
+}
+
+#opc {
+    width: 50vw;
+    margin: auto;
+    margin-top: 5vh;
+}
+
+.anchorBtn {
+    width: 100%;
+    background-color: teal;
+    color: white;
+    padding: 10px 20px;
+    box-shadow: 0 0 0 0 gray;
+    transition: 0.5s;
+}
+
+.anchorBtn:hover {
+    color: white;
+    text-decoration: none;
+    box-shadow: 2px 5px 10px 2px gray;
+}
