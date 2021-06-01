@@ -239,10 +239,10 @@ function addToView(ticket, table) {
     const lastUpd = new Date(ticket.last_update);
     $(table).append(`
     <div class="row text-center tableRow mx-0" id=` + ticket.service_id + `>
-        <div class="col-5 tableCell">
+        <div class="col-4 tableCell">
             ` + ticket.service_id + `
         </div>
-        <div class="col-3 tableCell">
+        <div class="col-4 tableCell">
             ` + ticket.title + `
         </div>
         <div class="col-2 tableCell">
