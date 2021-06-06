@@ -1,6 +1,6 @@
 $(document).ready(function () {
     //call url
-    $("#tweets").html("");
+    $("#tweets").html(`<div class="content-header">Tweet Analysis</div>`);
     sendData({}, "http://192.168.1.3:5000/gettweet", (result) =>{
         console.log(result)
         let res = JSON.parse(result);
@@ -11,7 +11,7 @@ $(document).ready(function () {
             let rating
             if(sentiment < 0.3) {
                 rating = 'bad'
-            } else if (sentiment >= 0.6) {
+            } else if (sentiment >= 0.5) {
                 rating = 'good'
             } else {
                 rating = 'ok';
@@ -25,4 +25,21 @@ $(document).ready(function () {
             `)
         })
     },false);
+    //testModel();
 });
+let cChart = undefined;
+function testModel() {
+    let symbol = $("#stock-symbol").val();
+    sendData({symbol:symbol}, "http://192.168.1.3:5000/stockprice", (res) =>{
+        console.log(res);
+        let result = JSON.parse(res);
+        console.log(result.output);
+        result.output_label ="Prediction"
+        result.actual_label = "Actual" 
+        if(cChart !== undefined) {
+            cChart.destroy();
+            cChart = undefined;
+        }
+        cChart = drawLineChart(result, "Stock Prediction", "stocksModel")
+    })
+}

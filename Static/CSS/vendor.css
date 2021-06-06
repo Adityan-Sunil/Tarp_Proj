@@ -84,6 +84,13 @@ tr{
     height:4vh;
     padding:0;
 }
+.vendor_row{
+    border:1px solid var(--shadow) !important;
+}
+.vendor_row>td{
+    border:1px solid var(--shadow) !important;
+    text-align: center;
+}
 .border {
     border:1px solid var(--heavy);
 }

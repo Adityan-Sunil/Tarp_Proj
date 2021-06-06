@@ -357,7 +357,7 @@ app.post('/adduVendor',(req,res)=>{
 app.post('/viewVendors', (req,res)=>{
     var details = req.session.company;
     console.log(details);
-    db.query("Select v.vendor_name, v.vendor_id, v.product_name from vendor v, vendor_reg r where r.vendor_id = v.vendor_id and r.company_id = $1",[req.session.company],(err, result)=>{
+    db.query("Select v.vendor_name, v.vendor_id, v.product_name,v.vendor_addr from vendor v, vendor_reg r where r.vendor_id = v.vendor_id and r.company_id = $1",[req.session.company],(err, result)=>{
         if(err){
             console.log(err);
         }else{
@@ -593,7 +593,16 @@ app.post('/showallemps',(req,res)=>{
         }
     })
   })
-  
+  app.post('/emp_salary', (req,res) => {
+      let user = req.session.user;
+      db.query("select paid_leave, leave_days from payroll where salary_id = (Select salary_id from employee where emp_id = $1)", [user], (err,result) => {
+          if(err) {
+              console.log(err);
+          }else {
+              res.send(result.rows)
+          }
+      }) 
+  })
   app.post('/salarydet', (req,res) => {
       console.log(req.session.user);
       db.query("select emp_id, emp_name, paygrade, current_sal, emp_designation from employee join payroll on payroll.salary_id = employee.salary_id where supervisor = $1", [req.session.user], (err, result) => {
@@ -711,7 +720,7 @@ app.post('/stocks/add/', (req, res) => {
 
 
 app.post('/stocks', (req, res) => {
-    db.query('SELECT * FROM Inventory where company_id = $1',[req.body.id],(error, results) => {
+    db.query('SELECT * FROM Inventory where company_id = $1',[req.session.company],(error, results) => {
         if (error) {
             console.log(error);
             res.send(error);

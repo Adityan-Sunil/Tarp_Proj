@@ -91,9 +91,8 @@ body {
     border-bottom:5px solid var(--heavy);
 }
 .page-content-display-area {
-    height:92vh;
+    height:92vh !important;
     width:85.2vw;
-    border:1px solid black;
 }
 .page-content-display {
     padding:1%;

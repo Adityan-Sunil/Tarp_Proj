@@ -11,14 +11,30 @@
     --shadow:#c8d8e4;
     --heavy:#2b6777;
 }
+.tracker-heading {
+    height:4vh;
+    color:white;
+    font-size:1.2em;
+    padding-left:1%;
+    line-height:4vh;
+    background: var(--heavy);
+}
 .tracker-tile {
-    border:1px solid black;
+    /* border:1px solid black; */
+    width:30%;
+    height:90%;
     display: flex;
-    width:40%;
+    justify-content: space-around;
+}
+.tracker-tab {
+    height:40%;
+    margin-bottom:1%;
 }
 .trackers {
     display:flex;
     flex-wrap:wrap;
+    height:90%;
+    border:1px solid black;
 }
 .tracker-tile {
     margin:0% 0.5%;
@@ -26,7 +42,8 @@
 .tracker-graph {
     margin-top:2%;
     border:0 !important;
+    width:80%
 }
-.tracker-graph {
-    border:1px solid black;
+.perfomance {
+    height:59%;
 }

@@ -1,7 +1,7 @@
 let past_orders;
 let company = "7b4bcde6-0c6e-4b37-b5d8-b36891b3ba87";
 let loaded = false;
-//getInvent();
+getInvent();
 $("#add-product-modal").hide();
 $("#updateFormModal").hide();
 function getCompany(){
@@ -12,7 +12,7 @@ function getCompany(){
 //Get Past Orders
 function getInvent(){
     if(!loaded) {
-            sendData({id:company}, "/stocks", (res)=>{
+            sendData({}, "/stocks", (res)=>{
                 console.log(res);
                 var count = 1;
                 var results = JSON.parse(res);

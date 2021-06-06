@@ -114,9 +114,10 @@ function viewVendors(){
             var result = JSON.parse(res);
             console.log(result[0]);
             $("#vendors_table").append(
-                    `<tr>
+                    `<tr class=vendor_row>
                         <td>${result[0].vendor_name}</td>
                         <td>${result[0].product_name}</td>
+                        <td>${result[0].vendor_addr}</td>
                     </tr>`
                 )
         })

@@ -1,3 +1,5 @@
+let leave_chart = undefined;
+let service_chart = undefined;
 $.each($(".tracker-tab-content"), function () { 
     $(this).css({"width": "100%",  "height": "100%"});
     $(this).hide();
@@ -8,34 +10,41 @@ $("#customer").css("width","100%");
 customerGraph("Service Calls Closed Status");
 orderGraph("Orders");
 inventoryGraph("Inventory Status")
-// testModel();
-// function toggleTab(e, th){
-//     console.log(th.dataset.toggle);
-//     e.preventDefault();
-//     $.each($(".tracker-tab-content"), function () { 
-//         $(this).css("width", "10%", "height", "10%");
-//         $(this).hide();
-//     });
-//     $("#"+th.dataset.toggle).show();
-//     $("#"+th.dataset.toggle).css({"width": "100%",  "height": "100%"});
-//     callFunction(th.dataset.toggle);    
-// }
+leaveData("Leaves")
+personalService("Targets")
 
-// function callFunction(elementName) {
-//     switch (elementName) {
-//         case "customer":
-//             customerGraph("Service Calls Closed Status")
-//             break;
-//         case "orders":
-//             orderGraph("Orders")
-//             break;
-//         default:
-//             break;
-//     }
-// }
-
-function testModel() {
-    sendData({symbol:"IDFC"}, "http://192.168.1.3:5000/stockprice", (res) =>{
+function leaveData(title) {
+    sendData({}, "/emp_salary", (result) => {
+        console.log(result);
+        let res = JSON.parse(result)[0];
+        let data = {}
         console.log(res);
+        data["Paid Leaves Taken"] = res.paid_leave;
+        data["Paid Leaves Available"] = Math.max(res.paid_leave - res.leave_days, 0)
+        console.log(data);
+        if(leave_chart !== undefined) {
+            leave_chart.destroy();
+        }
+        leave_chart = drawPieChart(data, title, "tab4_graph")
+    })
+}
+
+function personalService(title) {
+    sendData({}, "/fetch_tickets_by_emp", (results) => {
+        var data_res = JSON.parse(results);
+        console.log(data_res);
+        data = {Closed:0, Open:0}
+        data_res.forEach(element => {
+            if(element.closed) {
+                data.Closed++;
+            } else {
+                data.Open++;
+            }
+        });
+        console.log(data);
+        if(service_chart !== undefined) {
+            service_chart.destroy()
+        }
+        service_chart = drawPieChart(data, title, "tab5_graph");
     })
 }

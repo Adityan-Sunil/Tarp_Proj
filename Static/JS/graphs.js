@@ -12,8 +12,8 @@ function addtoGraph(type,element, data, title){
                         data: Object.values(data),
                         radius:'50%',
                         backgroundColor:[
-                            'rgb(255, 99, 132)',
-                            'rgb(54, 162, 235)',
+                            '#2b6777',
+                            '#c8d8e4',
                         ], 
                         hoverOffset: 4,
                     }]
@@ -43,8 +43,8 @@ function addtoGraph(type,element, data, title){
                     datasets:[{
                         data:Object.values(data),
                         backgroundColor:[
-                            'rgb(255, 99, 132)',
-                            'rgb(54, 162, 235)',
+                            '#2b6777',
+                            '#c8d8e4',
                         ], 
                         hoverOffset: 4,
                     }]

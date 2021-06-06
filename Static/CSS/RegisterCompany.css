@@ -103,10 +103,11 @@
 
 .tableCell {
     padding: 0;
+    vertical-align: middle;
 }
 
 .tableRow {
-    margin: 2vh 0px;
+    margin: 4vh 0px;
 }
 
 .tableHeader {
