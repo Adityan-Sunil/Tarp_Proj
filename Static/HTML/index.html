@@ -5,80 +5,68 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Title Page</title>
+    <link rel="stylesheet" href="template.css">
     <link rel="stylesheet" href="index.css">
     <script src="xmlHelper.js"></script>
+    <script defer src="checklogin.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js" integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg==" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
 <body> 
-    <div class="content">
-        <nav class="menubar">
-            <ul class="menubar-nav">
-                <li class="menubar-items">Vendors</li>
-                <li class="menubar-items">Inventory</li>
-                <li class="menubar-items">Customer</li>
-                <li class="menubar-items">Payrolls</li>
-                <li class="menubar-items">Invoice</li>
-            </ul>
-        </nav>
-        <div class="dashboard">
-            <div class="tile appointments">
-                <div class="tile-title">
-                    <div class="tile-title-text tile-title-sub">
-                        Reminders
-                    </div>
-                    <div class="tile-title-opt tile-title-sub">+</div>
-                </div>
-                <div class="tile-flex">
-                    <div class="height-anim emot-dan">Today</div>
-                    <div class="height-anim emot-pen">Upcoming</div>
-                    <div class="height-anim emot-suc">Completed</div>
-                    <div></div>
-                </div>
+    <nav class="navbar navbar-expand-md navbar-light bg-white">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">TARP</a>
+            <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+                <ul class="d-flex navbar-nav mr-auto mt-2 mt-lg-0 w-100">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Dashboard</a>
+                    </li>
+                    <li class="ms-auto nav-item align-self-end">
+                        <a href="Login.html" class="nav-link login-btn">Login</a>
+                    </li>
+                </ul>
             </div>
-            <div class="tile TOD">
-                <div class="tile-title">
-                    <div class="tile-title-text">
-                        Thought of the Day
-                    </div>
-                </div>
-                <div class="TOD-text">
-                    “May you live all the days of your life.” – Jonathan Swift.
-                </div>
+        </div>
+    </nav>
+    <div class="main-body container-fluid flex-grow-1">
+        <div class="row h-100 mt-1">
+            <div class="sidebar">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-items"><a href="./Vendor.html"><button class="sidebar-nav-btn sidebar-nav-btn-active " type="button" onclick="changePage(event, this)"> Vendors</button></li></a>
+                    <li class="sidebar-nav-items"><a href="./Inventory.html"><button class="sidebar-nav-btn" type="button" onclick="changePage(event, this)"> Inventory</button></li></a>
+                    <li class="sidebar-nav-items"><a href="./Payroll.html"><button class="sidebar-nav-btn" type="button" onclick="changePage(event, this)"> Payroll</button></li></a>
+                </ul> 
             </div>
-            <div class="tile trackers">
-               <div class="tile-title">
-                    <div class="tile-title-text tile-title-sub">Trackers</div>
-                    <div class="tile-title-opt tile-title-sub" id="add-tracker">+</div>
-               </div>
-               <div class="tile-content">
-                    <div class="tracker-tabs">
-                        <div class="tracker-tab" data-toggle="customer" onclick="toggleTab(event, this)">Tab1</div>
-                        <div class="tracker-tab" data-toggle="orders" onclick="toggleTab(event, this)">Tab2</div>
-                        <div class="tracker-tab" data-toggle="tab3" onclick="toggleTab(event, this)">Tab3</div>
-                    </div>
-                    <div class="tracker-tabs-content">
-                        <div id="customer" class="tracker-tab-content">
-                            <canvas id="tab1_graph"></canvas>
+            <div class="page-content">
+                <div class="page-content-display-area">
+                   <div class="trackers">
+                        <div class="tracker-tile customer">
+                            <div id="customer" class="tracker-graph">
+                                <canvas id="tab1_graph"></canvas>
+                            </div>
+                        </div>                    
+                        <div class="tracker-tile orders">
+                            <div id="orders" class="tracker-graph">
+                                <canvas id="tab2_graph"></canvas>
+                            </div>
                         </div>
-                        <div id="orders" class="tracker-tab-content">
-                            <canvas id="tab2_graph"></canvas>
+                        <div class="tracker-tile inventory">
+                            <div id="orders" class="tracker-graph">
+                                <canvas id="tab3_graph"></canvas>
+                            </div>
                         </div>
-                        <div id="tab3" class="tracker-tab-content">
-                            <canvas id="tab3_graph"></canvas>
-                        </div>
-                    </div>
-               </div>
+                   </div>
+                </div>
             </div>
         </div>
     </div>
-    <nav class="title-nav">
-        <ul class="nav-flex">
-            <!-- <li class="nav-item">Logo</li> -->
-            <li class="nav-item">TARP</li>
-            <li class="nav-item" id="loginbtn">Login</li>
-        </ul>
-    </nav>   
     <script src="tracker.js"></script>
     <script src="index.js"></script>
 </body>

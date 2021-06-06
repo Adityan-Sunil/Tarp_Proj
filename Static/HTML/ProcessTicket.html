@@ -9,12 +9,31 @@
     <title>Our Product Name Here</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script defer src="checkLogin.js"></script>
+    <!-- <script defer src="checkLogin.js"></script> -->
     <script defer src="ProcessTicket.js"></script>
     <link rel="stylesheet" href="ProcessTicket.css">
 </head>
 <body>
-    <div class="d-flex align-items-center" id="mainContent">
+    <nav class="navbar navbar-expand-md navbar-light bg-white">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">TARP</a>
+            <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+             aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+                <ul class="d-flex navbar-nav mr-auto mt-2 mt-lg-0 w-100">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Dashboard</a>
+                    </li>
+                    <li class="ms-auto nav-item align-self-end login-btn-li">
+                        <a href="Login.html" class="nav-link login-btn">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="d-flex" id="mainContent" style="margin-top:1%">
         <div class="container-fluid mx-auto" id="mainContainer">
             <div class="row">
                 <div class="col-2" id="selectPrimary">

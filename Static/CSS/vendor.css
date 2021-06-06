@@ -22,18 +22,10 @@ body{
     /* background: #6d7993; */
     color:white;
 }
-.navbar{
-    height:5vh;
-    text-align: center;
-    width:100%;
-    line-height:5vh;
-    font-size: 1.2em;
-}
+
 .body{
     margin-top:1%;
     min-height:70vh;
-    display: grid;
-    grid-template-columns: 15% 85%;
 }
 .options{
     /* position:fixed;
@@ -68,10 +60,6 @@ body{
     line-height: 5vh;
     border:1px solid rgb(165, 164, 164);
 }
-
-.sidebar{
-    width:20%;
-}
 .reg{
     padding:2%;
     margin-bottom:2%;
@@ -87,29 +75,40 @@ h3{
     box-shadow: 0px 0px 10px 5px var(--shadow);
 }
 table{
-    width:100%;
+    margin-top:1%;
+    width:50%;
     border-collapse: collapse;
     padding:0;
-    border:1px solid var(--shadow)
 }
 tr{
-    height:3vh;
+    height:4vh;
     padding:0;
 }
-td{
-    text-align: center;
+.border {
+    border:1px solid var(--heavy);
+}
+.label {
+    padding-right:1%;
+    text-align: right;
+}
+.data {
+    padding-left:1%;
+}
+#confirm_reg {
+    width:5vw;
+    color:white;
+    border: 0;
+    background-color: var(--buttons);
+}
+.content-body div{
+    background: var(--shadow);
 }
 nav{
     background: var(--navbar);
     color:black;
     border-bottom:1px solid var(--shadow)
 }
-.sidebar{
-    background: var(--heavy);
-}
-.content-body div{
-    background: var(--shadow);
-}
+
 .nav-link{
     text-transform:uppercase;
     margin:1% 0;
@@ -133,9 +132,18 @@ a {
     border-radius: 5px;
     color:white
 }
-tr {
-    border-bottom:var(--heavy);
+#transactions {
+    border:1px solid var(--shadow);
+}
+#transactions>tr>td, thead {
+    text-align: center;
+}
+#transactions>tr:nth-child(even){
+    background: var(--shadow) !important;
 }
 td {
     padding:0;
+}
+.vendor-result>tr {
+    height:4vh;
 }

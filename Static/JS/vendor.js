@@ -9,18 +9,18 @@ function regVendor(e){
         res = JSON.parse(res);
         console.log(res);
         $("#regVendor_search").append(
-            `<table>
+            `<table class="vendor-result">
                 <tr>
-                    <td>Company ID</td>
-                    <td id="reg_vendor_id">${res[0].company_id}</td>
+                    <td class="label border">Company ID</td>
+                    <td class="data border" id="reg_vendor_id">${res[0].company_id}</td>
                 </tr>
                 <tr>
-                    <td>Comapany Name</td>
-                    <td>${res[0].company_name}</td>
+                    <td class="label border">Comapany Name</td>
+                    <td class="data border">${res[0].company_name}</td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><button onclick="confirm_reg_vendor(event)">Confirm</button></td>
+                    <td class="data"><button id="confirm_reg" onclick="confirm_reg_vendor(event)">Confirm</button></td>
                 </tr>
             </table>`
             );
@@ -30,7 +30,7 @@ function regVendor(e){
 function confirm_reg_vendor(e){
     e.preventDefault();
     let vendor_id = $("#reg_vendor_id").text();
-    sendData({"ID":vendor_id},"/confirmVendor",(res)=>{
+    sendData({ID:vendor_id},"/confirmVendor",(res)=>{
         console.log(res);
     })
 }
@@ -40,8 +40,10 @@ function getTransactions(){
         sendData({ID:company},"/orderGraph",(res)=>{
             console.log(res);
             var graphData = JSON.parse(res);
-            addtoGraph("doughnut","buy_chart",checkNull(graphData.Buy, "transaction"),"Incoming");
-            addtoGraph("doughnut","sell_chart", checkNull(graphData.Sell, "transaction"),"Outgoing");
+            if(graphData.Buy !== undefined)
+                addtoGraph("doughnut","buy_chart",checkNull(graphData.Buy, "transaction"),"Incoming");
+            if(graphData.Sell !== undefined)
+                addtoGraph("doughnut","sell_chart", checkNull(graphData.Sell, "transaction"),"Outgoing");
         }, true)
         sendData({ID:company},"/orders",(res)=>{
             console.log(JSON.parse(res));
