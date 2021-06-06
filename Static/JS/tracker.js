@@ -109,13 +109,14 @@ function orderGraph(title) {
         console.log(result);
         var buyData = result.Buy;
         console.log(buyData)
+        let curBarOptions = JSON.parse(JSON.stringify(barOptions));
         barData.data.labels = Object.keys(buyData);
         barData.data.datasets[0].data = Object.values(buyData);
-        barOptions.data = barData.data
-        barOptions.options.indexAxis =  "x"
-        barOptions.options.plugins.title.text = title;
-        new Chart($("#tab2_graph"), barOptions);
-        console.log(barOptions);
+        curBarOptions.data = barData.data
+        curBarOptions.options.indexAxis =  "x"
+        curBarOptions.options.plugins.title.text = title;
+        new Chart($("#tab2_graph"), curBarOptions);
+        console.log(curBarOptions);
     })
 
 }
@@ -130,13 +131,14 @@ function inventoryGraph(title) {
         })
         // var buyData = result.Buy;
         // console.log(buyData)
-        barOptions.options.indexAxis =  "y"
+        let curBarOptions = JSON.parse(JSON.stringify(barOptions));
+        curBarOptions.options.indexAxis =  "y"
         barData.data.labels = Object.keys(data);
         barData.data.datasets[0].data = Object.values(data);
-        barOptions.data = barData.data
-        barOptions.options.plugins.title.text = title;
-        new Chart($("#tab3_graph"), barOptions);
-        console.log(barOptions);
+        curBarOptions.data = barData.data
+        curBarOptions.options.plugins.title.text = title;
+        new Chart($("#tab3_graph"), curBarOptions);
+        console.log(curBarOptions);
     })
 
  }
