@@ -154,3 +154,41 @@ td {
 .vendor-result>tr {
     height:4vh;
 }
+#vendor-modal{
+    position:fixed;
+    top:0;
+    left:0;
+    height:100%;
+    width: 100%;
+    background-color: rgba(255,255,255,0.7);
+}
+#vendor-modal-content {
+    max-height:40%;
+    overflow-y: scroll;
+    width:40%;
+    left:30%;
+    top:30%;
+    background: white;
+    position: relative;
+    border:1px solid black;
+    text-align: center;
+}
+.vendor-modal-heading {
+    background-color: var(--heavy);
+    color:white;
+    margin-bottom:1%;
+    height:5vh;
+}
+.vendor-product-row {
+    display:flex;
+    width:100%;
+}
+.product-row {
+    display:flex;
+    width:100%;
+    text-align: center;
+}
+.product-row>div {
+    border:1px solid var(--shadow);
+    width:50%;
+}

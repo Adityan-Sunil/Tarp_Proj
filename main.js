@@ -367,16 +367,27 @@ app.post('/viewVendors', (req,res)=>{
     })
 })
 
+app.post('/viewRegVendor', (req,res) =>{
+    db.query("select company.company_id, product_name, company_name, company_addr from company join inventory on company.company_id = inventory.company_id where company.company_id in (select vendor_id from vendor_reg where company_id = '81afb988-db90-4fd2-b0df-d22ee39406b5') and product_id in (select product_id from vendor_reg where company_id = $1)", [req.session.company], (err, result) => {
+        if(err) {
+            console.log(err);
+            res.send("Failed")
+        } else {
+            res.send(result.rows)
+        }
+    })
+})
 
 //route for retrieving data from vendor
 app.post('/getInvent',(req,res)=>{
-    var details = JSON.parse(req.body);
-    db.query("SELECT * from inventory where OWN_ID = $1",[details.id],(err,result)=>{
+    var details = req.body
+    console.log(req.body)
+    db.query("SELECT * from inventory where company_id = $1",[details.id],(err,result)=>{
         if(err){
             console.log(err);
-            res.send(null);
+            res.send("failed");
         }else{
-            res.send(result);
+            res.send(result.rows);
         }
     })
 })

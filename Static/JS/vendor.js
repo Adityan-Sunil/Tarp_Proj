@@ -1,7 +1,7 @@
 let company = "7b4bcde6-0c6e-4b37-b5d8-b36891b3ba87";
 let loadedVendors = false;
 let loadedTransactions = false;
-
+closeModal()
 function regVendor(e){
     e.preventDefault();
     data = {"ID":$("#vendor-dbsearch").val()}; //Data to be sent...vendor-dbsearch is the id of the form
@@ -114,19 +114,63 @@ function viewVendors(){
             var result = JSON.parse(res);
             console.log(result[0]);
             $("#vendors_table").append(
-                    `<tr class=vendor_row>
+                    `<tr class="vendor_row">
                         <td>${result[0].vendor_name}</td>
                         <td>${result[0].product_name}</td>
                         <td>${result[0].vendor_addr}</td>
+                        <td><button class="vendor-dets" onclick="getVendorInvent(event, this)" data-id=${result[0].vendor_id}>Details</td>
+                    </tr>`
+                )
+        })
+        sendData(data,"/viewRegVendor",(res)=>{
+            var result = JSON.parse(res);
+            console.log(result[0]);
+            $("#vendors_table").append(
+                    `<tr id =${result[0].company_id} class="vendor_row">
+                        <td>${result[0].company_name}</td>
+                        <td>${result[0].product_name}</td>
+                        <td>${result[0].company_addr}</td>
+                        <td><button class="vendor-dets" onclick="getVendorInvent(event, this)" data-id=${result[0].company_id}>Details</td>
                     </tr>`
                 )
         })
         loadedVendors = true;
     }
 }
-function getVendorInvent(){
-    data = {"ID":("$vendor-id").val()};
+function getVendorInvent(e,th){
+    e.preventDefault();
+    data = {"id":th.dataset.id};
     sendData(data,"/getInvent",(res)=>{
-        console.log(res);
+        showVendorModal()
+        $("#vendor-modal-content").html(` 
+        <div class="vendor-modal-heading"> 
+            <h2>Vendor Inventory Details</h2>
+        </div>               
+        <div class="product-row">
+            <div class="product-cell">Product Name</div>
+            <div class="product-cell">Quantity</div>
+        </div>`)
+        let results = JSON.parse(res)
+        if(results.length > 0) {
+            results.forEach((result) => {
+            $("#vendor-modal-content").append(`
+                <div class="product-row">
+                    <div class="product-cell">${result.product_name}</div>
+                    <div class="product-cell">${result.quantity}</div>
+                </div>
+            `)
+            })
+        }else{
+            $("#vendor-modal-content").append(`<divclass="product-row">Inventory cannot be retrieved since the vendor is not a client</div>`)
+        }
     })
+}
+function showVendorModal(){
+    $("#vendor-modal").show();
+}
+
+function closeModal(e=undefined, th = undefined) {
+    if((e === undefined && th === undefined) || e.target === th) {
+        $("#vendor-modal").hide();
+    }
 }
