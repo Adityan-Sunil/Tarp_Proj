@@ -78,7 +78,7 @@ function updateInventory(){
 function deleteProduct(e, ths){
     var id = ths.dataset.id
     console.log(id);
-    sendData({company:company, prod_id:id},"/stocks/delete/",(res)=>{
+    sendData({prod_id:id},"/stocks/delete/",(res)=>{
         if(res == "success"){
             loaded = false;
             getInvent();
@@ -135,7 +135,6 @@ function updateProd(e, id){
     form.map(element=>{
         data[element.name] = element.value
     })
-    data['company'] = company;
     data['prod_id'] = id;
     console.log(data);
     sendData(data, "/stocks/edit", ()=>{
@@ -154,7 +153,6 @@ function regProduct(e){
     form_details.map(element =>{
         data[element.name] = element.value
     })
-    data['company'] = company;
     console.log(data);
     sendData(data, "/stocks/add",(res)=>{
         console.log(res);

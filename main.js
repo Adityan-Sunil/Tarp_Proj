@@ -717,7 +717,7 @@ app.post('/showallemps',(req,res)=>{
 app.post('/stocks/add/', (req, res) => {
     console.log('post body', req.body);
         const sql = 'INSERT INTO Inventory VALUES ($1,$2,$3, $4)';
-        const params = [req.body.prod_id, req.body.prod_name, req.body.quant, req.body.company];
+        const params = [req.body.prod_id, req.body.prod_name, req.body.quant, req.session.company];
         db.query(sql, params,(error,results) => {
             if(error){
                 console.log(error);
@@ -745,7 +745,7 @@ app.post('/stocks', (req, res) => {
 app.post('/stocks/delete/', (req, res) => {
 
     const sql = 'DELETE FROM Inventory WHERE product_id = $1 and company_id = $2'
-    const params = [req.body.prod_id, req.body.company];
+    const params = [req.body.prod_id, req.session.company];
     db.query(sql, params,(error, results) => {
         if(error) {
             console.log(error);
@@ -817,7 +817,7 @@ app.get('/stocks/edit/:id', (req, res) => {
 app.post('/stocks/edit/', (req, res) => {
 
     const sql = 'UPDATE Inventory SET product_name=$1, quantity =$2 WHERE product_id=$4 and company_id = $3'
-    const params = [req.body.prod_name, req.body.prod_quant, req.body.company, req.body.prod_id];
+    const params = [req.body.prod_name, req.body.prod_quant, req.session.company, req.body.prod_id];
     db.query(sql, params,(error, results) => {
         if(error){
             console.log(error);
