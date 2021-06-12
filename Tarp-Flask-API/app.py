@@ -31,6 +31,7 @@ model = create_model(input_length,BATCH_SIZE,5000)
 model.load_weights("model.05-0.39.h5")
 stock_model = load_model("stock_price.h5")
 
+#*************************************************************************Tweet Analysis**********************************************************************************
 def Process_tweet(tweet):
   tweet = tweet.replace("n't"," not").replace("'m"," am").replace("'ve"," have").replace("’","'").replace('`','').replace("(","").replace(")","")
   tweet = tweet.split()
@@ -63,6 +64,8 @@ def predict():
         output = str(model.predict([example_vector])[0][0])
     return jsonify({'output': output})
 
+
+#************************************************************************* Stock Price **********************************************************************************
 @app.route('/stockprice', methods=['POST'])
 @cross_origin()
 def stock():
